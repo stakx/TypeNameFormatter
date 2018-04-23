@@ -24,7 +24,17 @@ namespace TypeNameFormatter
 
         private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace)
         {
-            throw new NotImplementedException();
+            if (withNamespace)
+            {
+                string @namespace = type.Namespace;
+                if (string.IsNullOrEmpty(@namespace) == false)
+                {
+                    stringBuilder.Append(type.Namespace);
+                    stringBuilder.Append('.');
+                }
+            }
+
+            stringBuilder.Append(type.Name);
         }
     }
 }
