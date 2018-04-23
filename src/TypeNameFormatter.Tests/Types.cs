@@ -23,3 +23,16 @@ namespace N
         }
     }
 }
+
+namespace N.O
+{
+    internal class A
+    {
+        internal class B
+        {
+            internal class C
+            {
+            }
+        }
+    }
+}
