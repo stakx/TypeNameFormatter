@@ -11,6 +11,10 @@ internal class A
     }
 }
 
+internal class A<T>
+{
+}
+
 namespace N
 {
     internal class A
@@ -21,6 +25,10 @@ namespace N
             {
             }
         }
+    }
+
+    internal class A<T>
+    {
     }
 }
 
@@ -34,5 +42,9 @@ namespace N.O
             {
             }
         }
+    }
+
+    internal class A<T>
+    {
     }
 }

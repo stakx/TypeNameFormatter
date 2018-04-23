@@ -3,6 +3,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace TypeNameFormatter
@@ -24,22 +25,50 @@ namespace TypeNameFormatter
 
         private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace)
         {
-            if (type.IsNested)
+            if (type.IsGenericParameter == false)
             {
-                stringBuilder.AppendName(type.DeclaringType, withNamespace);
-                stringBuilder.Append('.');
-            }
-            else if (withNamespace)
-            {
-                string @namespace = type.Namespace;
-                if (string.IsNullOrEmpty(@namespace) == false)
+                if (type.IsNested)
                 {
-                    stringBuilder.Append(type.Namespace);
+                    stringBuilder.AppendName(type.DeclaringType, withNamespace);
                     stringBuilder.Append('.');
+                }
+                else if (withNamespace)
+                {
+                    string @namespace = type.Namespace;
+                    if (string.IsNullOrEmpty(@namespace) == false)
+                    {
+                        stringBuilder.Append(type.Namespace);
+                        stringBuilder.Append('.');
+                    }
                 }
             }
 
-            stringBuilder.Append(type.Name);
+            var name = type.Name;
+            if (type.IsGenericType)
+            {
+                var backtickIndex = name.LastIndexOf('`');
+                Debug.Assert(backtickIndex >= 0);
+                stringBuilder.Append(name, 0, backtickIndex);
+
+                stringBuilder.Append('<');
+
+                var genericTypeArgs = type.GetGenericArguments();
+                for (int i = 0, n = genericTypeArgs.Length; i < n; ++i)
+                {
+                    if (i > 0)
+                    {
+                        stringBuilder.Append(", ");
+                    }
+
+                    stringBuilder.AppendName(genericTypeArgs[i], withNamespace);
+                }
+
+                stringBuilder.Append('>');
+            }
+            else
+            {
+                stringBuilder.Append(name);
+            }
         }
     }
 }
