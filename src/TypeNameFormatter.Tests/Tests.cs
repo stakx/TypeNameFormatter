@@ -150,5 +150,41 @@ namespace TypeNameFormatter
         {
             Assert.Equal("N.O.A<T>", typeof(global::N.O.A<>).GetFormattedFullName());
         }
+
+        [Fact]
+        public void Generic_type_with_two_parameters_without_namespace_Name()
+        {
+            Assert.Equal("A<T, U>", typeof(global::A<,>).GetFormattedName());
+        }
+
+        [Fact]
+        public void Generic_type_with_two_parameters_without_namespace_FullName()
+        {
+            Assert.Equal("A<T, U>", typeof(global::A<,>).GetFormattedFullName());
+        }
+
+        [Fact]
+        public void Generic_type_with_two_parameters_with_namespace_Name()
+        {
+            Assert.Equal("A<T, U>", typeof(global::N.A<,>).GetFormattedName());
+        }
+
+        [Fact]
+        public void Generic_type_with_two_parameters_with_namespace_FullName()
+        {
+            Assert.Equal("N.A<T, U>", typeof(global::N.A<,>).GetFormattedFullName());
+        }
+
+        [Fact]
+        public void Generic_type_with_two_parameters_with_double_namespace_Name()
+        {
+            Assert.Equal("A<T, U>", typeof(global::N.O.A<,>).GetFormattedName());
+        }
+
+        [Fact]
+        public void Generic_type_with_two_parameters_with_double_namespace_FullName()
+        {
+            Assert.Equal("N.O.A<T, U>", typeof(global::N.O.A<,>).GetFormattedFullName());
+        }
     }
 }
