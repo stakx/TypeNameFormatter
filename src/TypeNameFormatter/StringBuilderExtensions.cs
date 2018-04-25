@@ -23,13 +23,18 @@ namespace TypeNameFormatter
             return stringBuilder;
         }
 
-        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace)
+        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace, Type[] innermostTypeGenericTypeArgs = null)
         {
             if (type.IsGenericParameter == false)
             {
                 if (type.IsNested)
                 {
-                    stringBuilder.AppendName(type.DeclaringType, withNamespace);
+                    if (type.IsGenericType && innermostTypeGenericTypeArgs == null)
+                    {
+                        innermostTypeGenericTypeArgs = type.GetGenericArguments();
+                    }
+
+                    stringBuilder.AppendName(type.DeclaringType, withNamespace, innermostTypeGenericTypeArgs);
                     stringBuilder.Append('.');
                 }
                 else if (withNamespace)
@@ -71,6 +76,11 @@ namespace TypeNameFormatter
                 {
                     stringBuilder.Append('<');
 
+                    if (innermostTypeGenericTypeArgs == null)
+                    {
+                        innermostTypeGenericTypeArgs = genericTypeArgs;
+                    }
+
                     for (int i = offset, n = genericTypeArgs.Length; i < n; ++i)
                     {
                         if (i > offset)
@@ -78,7 +88,7 @@ namespace TypeNameFormatter
                             stringBuilder.Append(", ");
                         }
 
-                        stringBuilder.AppendName(genericTypeArgs[i], withNamespace);
+                        stringBuilder.AppendName(innermostTypeGenericTypeArgs[i], withNamespace);
                     }
 
                     stringBuilder.Append('>');

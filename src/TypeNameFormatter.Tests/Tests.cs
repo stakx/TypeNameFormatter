@@ -361,5 +361,11 @@ namespace TypeNameFormatter
         {
             Assert.Equal(expectedName, type.GetFormattedName());
         }
+
+        [Fact]
+        public void Nested_generic_type_instantiation_with_namespaces_in_type_args()
+        {
+            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedFullName());
+        }
     }
 }
