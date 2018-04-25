@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2018 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
+using System;
 using Xunit;
 
 namespace TypeNameFormatter
@@ -329,6 +330,36 @@ namespace TypeNameFormatter
         public void Generic_type_instantiation_with_double_namespace_arg_is_generic_type_instantiation_FullName()
         {
             Assert.Equal("N.O.A<A<A>>", typeof(global::N.O.A<global::A<global::A>>).GetFormattedFullName());
+        }
+
+        [Theory]
+        [InlineData("A<T>.B", typeof(global::A<>.B))]
+        [InlineData("A<T>.B.C", typeof(global::A<>.B.C))]
+        [InlineData("A<T>.B.C<U>", typeof(global::A<>.B.C<>))]
+        [InlineData("A<T>.B.C<U, V>", typeof(global::A<>.B.C<,>))]
+        [InlineData("A<T>.B<U>", typeof(global::A<>.B<>))]
+        [InlineData("A<T>.B<U>.C", typeof(global::A<>.B<>.C))]
+        [InlineData("A<T>.B<U>.C<V>", typeof(global::A<>.B<>.C<>))]
+        [InlineData("A<T>.B<U>.C<V, W>", typeof(global::A<>.B<>.C<,>))]
+        [InlineData("A<T>.B<U, V>", typeof(global::A<>.B<,>))]
+        [InlineData("A<T>.B<U, V>.C", typeof(global::A<>.B<,>.C))]
+        [InlineData("A<T>.B<U, V>.C<W>", typeof(global::A<>.B<,>.C<>))]
+        [InlineData("A<T>.B<U, V>.C<W, X>", typeof(global::A<>.B<,>.C<,>))]
+        [InlineData("A<T, U>.B", typeof(global::A<,>.B))]
+        [InlineData("A<T, U>.B.C", typeof(global::A<,>.B.C))]
+        [InlineData("A<T, U>.B.C<V>", typeof(global::A<,>.B.C<>))]
+        [InlineData("A<T, U>.B.C<V, W>", typeof(global::A<,>.B.C<,>))]
+        [InlineData("A<T, U>.B<V>", typeof(global::A<,>.B<>))]
+        [InlineData("A<T, U>.B<V>.C", typeof(global::A<,>.B<>.C))]
+        [InlineData("A<T, U>.B<V>.C<W>", typeof(global::A<,>.B<>.C<>))]
+        [InlineData("A<T, U>.B<V>.C<W, X>", typeof(global::A<,>.B<>.C<,>))]
+        [InlineData("A<T, U>.B<V, W>", typeof(global::A<,>.B<,>))]
+        [InlineData("A<T, U>.B<V, W>.C", typeof(global::A<,>.B<,>.C))]
+        [InlineData("A<T, U>.B<V, W>.C<X>", typeof(global::A<,>.B<,>.C<>))]
+        [InlineData("A<T, U>.B<V, W>.C<X, Y>", typeof(global::A<,>.B<,>.C<,>))]
+        public void Nested_closed_generic_types(string expectedName, Type type)
+        {
+            Assert.Equal(expectedName, type.GetFormattedName());
         }
     }
 }

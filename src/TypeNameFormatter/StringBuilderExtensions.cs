@@ -56,20 +56,33 @@ namespace TypeNameFormatter
                     stringBuilder.Append(name);
                 }
 
-                stringBuilder.Append('<');
-
                 var genericTypeArgs = type.GetGenericArguments();
-                for (int i = 0, n = genericTypeArgs.Length; i < n; ++i)
+                int offset = 0;
+                if (type.IsNested)
                 {
-                    if (i > 0)
+                    var outerTypeGenericTypeArgs = type.DeclaringType.GetGenericArguments();
+                    if (genericTypeArgs.Length >= outerTypeGenericTypeArgs.Length)
                     {
-                        stringBuilder.Append(", ");
+                        offset = outerTypeGenericTypeArgs.Length;
                     }
-
-                    stringBuilder.AppendName(genericTypeArgs[i], withNamespace);
                 }
 
-                stringBuilder.Append('>');
+                if (offset < genericTypeArgs.Length)
+                {
+                    stringBuilder.Append('<');
+
+                    for (int i = offset, n = genericTypeArgs.Length; i < n; ++i)
+                    {
+                        if (i > offset)
+                        {
+                            stringBuilder.Append(", ");
+                        }
+
+                        stringBuilder.AppendName(genericTypeArgs[i], withNamespace);
+                    }
+
+                    stringBuilder.Append('>');
+                }
             }
             else
             {
