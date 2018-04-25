@@ -47,8 +47,14 @@ namespace TypeNameFormatter
             if (type.IsGenericType)
             {
                 var backtickIndex = name.LastIndexOf('`');
-                Debug.Assert(backtickIndex >= 0);
-                stringBuilder.Append(name, 0, backtickIndex);
+                if (backtickIndex >= 0)
+                {
+                    stringBuilder.Append(name, 0, backtickIndex);
+                }
+                else
+                {
+                    stringBuilder.Append(name);
+                }
 
                 stringBuilder.Append('<');
 
