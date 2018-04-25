@@ -23,18 +23,18 @@ namespace TypeNameFormatter
             return stringBuilder;
         }
 
-        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace, Type[] innermostTypeGenericTypeArgs = null)
+        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace)
+        {
+            stringBuilder.AppendName(type, withNamespace, type.IsGenericType ? type.GetGenericArguments() : null);
+        }
+
+        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace, Type[] genericTypeArgs)
         {
             if (type.IsGenericParameter == false)
             {
                 if (type.IsNested)
                 {
-                    if (type.IsGenericType && innermostTypeGenericTypeArgs == null)
-                    {
-                        innermostTypeGenericTypeArgs = type.GetGenericArguments();
-                    }
-
-                    stringBuilder.AppendName(type.DeclaringType, withNamespace, innermostTypeGenericTypeArgs);
+                    stringBuilder.AppendName(type.DeclaringType, withNamespace, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
                 else if (withNamespace)
@@ -49,7 +49,7 @@ namespace TypeNameFormatter
             }
 
             var name = type.Name;
-            if (type.IsGenericType)
+            if (genericTypeArgs != null)
             {
                 var backtickIndex = name.LastIndexOf('`');
                 if (backtickIndex >= 0)
@@ -61,34 +61,30 @@ namespace TypeNameFormatter
                     stringBuilder.Append(name);
                 }
 
-                var genericTypeArgs = type.GetGenericArguments();
-                int offset = 0;
+                var ownGenericTypeParamCount = type.GetGenericArguments().Length;
+
+                int ownGenericTypeArgStartIndex = 0;
                 if (type.IsNested)
                 {
-                    var outerTypeGenericTypeArgs = type.DeclaringType.GetGenericArguments();
-                    if (genericTypeArgs.Length >= outerTypeGenericTypeArgs.Length)
+                    var outerTypeGenericTypeParamCount = type.DeclaringType.GetGenericArguments().Length;
+                    if (ownGenericTypeParamCount >= outerTypeGenericTypeParamCount)
                     {
-                        offset = outerTypeGenericTypeArgs.Length;
+                        ownGenericTypeArgStartIndex = outerTypeGenericTypeParamCount;
                     }
                 }
 
-                if (offset < genericTypeArgs.Length)
+                if (ownGenericTypeArgStartIndex < ownGenericTypeParamCount)
                 {
                     stringBuilder.Append('<');
 
-                    if (innermostTypeGenericTypeArgs == null)
+                    for (int i = ownGenericTypeArgStartIndex, n = ownGenericTypeParamCount; i < n; ++i)
                     {
-                        innermostTypeGenericTypeArgs = genericTypeArgs;
-                    }
-
-                    for (int i = offset, n = genericTypeArgs.Length; i < n; ++i)
-                    {
-                        if (i > offset)
+                        if (i > ownGenericTypeArgStartIndex)
                         {
                             stringBuilder.Append(", ");
                         }
 
-                        stringBuilder.AppendName(innermostTypeGenericTypeArgs[i], withNamespace);
+                        stringBuilder.AppendName(genericTypeArgs[i], withNamespace);
                     }
 
                     stringBuilder.Append('>');
