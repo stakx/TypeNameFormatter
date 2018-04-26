@@ -222,5 +222,25 @@ namespace TypeNameFormatter
         {
             Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
         }
+
+        [Theory]
+        [InlineData("A[]", typeof(global::A[]))]
+        [InlineData("A[]", typeof(global::N.A[]))]
+        [InlineData("A<A[]>", typeof(global::A<global::A[]>))]
+        [InlineData("object[]", typeof(object[]))]
+        public void Array_type_Name(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+        }
+
+        [Theory]
+        [InlineData("A[]", typeof(global::A[]))]
+        [InlineData("N.A[]", typeof(global::N.A[]))]
+        [InlineData("A<A[]>", typeof(global::A<global::A[]>))]
+        [InlineData("object[]", typeof(object[]))]
+        public void Array_type_FullName(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+        }
     }
 }

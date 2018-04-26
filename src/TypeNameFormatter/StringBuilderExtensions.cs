@@ -59,6 +59,22 @@ namespace TypeNameFormatter
                 stringBuilder.Append(typeKeyword);
                 return;
             }
+            else if (type.HasElementType)
+            {
+                var elementType = type.GetElementType();
+                if (type.IsArray)
+                {
+                    stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+                    stringBuilder.Append("[]");
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                return;
+            }
+
 
             if (type.IsGenericParameter == false)
             {
