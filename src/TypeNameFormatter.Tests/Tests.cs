@@ -280,5 +280,12 @@ namespace TypeNameFormatter
         {
             Assert.Equal(expectedFormattedName, type.GetFormattedName());
         }
+
+        [Fact]
+        public void Array_of_generic_type_instantiation_of_jagged_array_type()
+        {
+            var type = typeof(global::N.A<int*[,][][,,]>[]);
+            Assert.Equal("N.A<int*[,][][,,]>[]", type.GetFormattedFullName());
+        }
     }
 }

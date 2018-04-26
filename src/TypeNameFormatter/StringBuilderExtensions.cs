@@ -68,7 +68,7 @@ namespace TypeNameFormatter
                 {
                     if (elementType.IsArray == false)
                     {
-                        stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+                        stringBuilder.AppendName(elementType, withNamespace);
 
                         var rank = type.GetArrayRank();
                         if (rank == 1)
@@ -94,7 +94,7 @@ namespace TypeNameFormatter
                             at = at.GetElementType();
                         }
 
-                        stringBuilder.AppendName(at, withNamespace, genericTypeArgs);
+                        stringBuilder.AppendName(at, withNamespace);
                         while (queue.Count > 0)
                         {
                             at = queue.Dequeue();
@@ -108,11 +108,11 @@ namespace TypeNameFormatter
                 else if (type.IsByRef)
                 {
                     stringBuilder.Append("ref ");
-                    stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+                    stringBuilder.AppendName(elementType, withNamespace);
                 }
                 else if (type.IsPointer)
                 {
-                    stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+                    stringBuilder.AppendName(elementType, withNamespace);
                     stringBuilder.Append('*');
                 }
                 else
