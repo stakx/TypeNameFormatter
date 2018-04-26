@@ -27,7 +27,7 @@ Console.WriteLine(someType.GetFormattedFullName());
 // => System.Collections.Generic.IEnumerable<int[]>
 ```
 
-Formatting any `Type` involves more special cases than you might expect (such as generic types, nested types, multi-dimensional and jagged arrays, reference and pointer types). This library deals with all of those, so that you don't have to.
+Formatting any `Type` involves more special cases than you might expect (such as generic types, nested types, multi-dimensional and jagged arrays, by-reference and pointer types). This library deals with all of those, so that you don't have to.
 
 
 ## How do I use it?
