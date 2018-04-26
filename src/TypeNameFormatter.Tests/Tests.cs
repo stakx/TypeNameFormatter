@@ -243,6 +243,16 @@ namespace TypeNameFormatter
             Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
         }
 
+
+        [Theory]
+        [InlineData("A[,]", typeof(global::A[,]))]
+        [InlineData("A[,,]", typeof(global::A[,,]))]
+        [InlineData("A[,,,]", typeof(global::A[,,,]))]
+        public void Multidimensional_array_type_Name(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+        }
+
         [Fact]
         public void Reference_type_Name()
         {

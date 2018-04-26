@@ -66,7 +66,20 @@ namespace TypeNameFormatter
                 if (type.IsArray)
                 {
                     stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
-                    stringBuilder.Append("[]");
+
+                    var rank = type.GetArrayRank();
+                    if (rank == 1)
+                    {
+                        stringBuilder.Append("[]");
+                    }
+                    else
+                    {
+                        Debug.Assert(rank > 1);
+
+                        stringBuilder.Append('[');
+                        stringBuilder.Append(',', rank - 1);
+                        stringBuilder.Append(']');
+                    }
                 }
                 else if (type.IsByRef)
                 {
