@@ -46,7 +46,7 @@ namespace TypeNameFormatter
 
         private static void AppendName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type[] genericTypeArgs)
         {
-            if (typeKeywords.TryGetValue(type, out string typeKeyword))
+            if (options.IsSet(TypeNameFormatOptions.NoKeywords) == false && typeKeywords.TryGetValue(type, out string typeKeyword))
             {
                 stringBuilder.Append(typeKeyword);
                 return;

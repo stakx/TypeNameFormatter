@@ -10,5 +10,6 @@ namespace TypeNameFormatter
     {
         Default = 0,
         Namespaces = 1,
+        NoKeywords = 2,
     }
 }

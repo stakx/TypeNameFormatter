@@ -207,6 +207,28 @@ namespace TypeNameFormatter
             Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
+
+        [Theory]
+        [InlineData("System.Byte", typeof(byte))]
+        [InlineData("System.Char", typeof(char))]
+        [InlineData("System.Decimal", typeof(decimal))]
+        [InlineData("System.Double", typeof(double))]
+        [InlineData("System.Single", typeof(float))]
+        [InlineData("System.Int32", typeof(int))]
+        [InlineData("System.Int64", typeof(long))]
+        [InlineData("System.Object", typeof(object))]
+        [InlineData("System.SByte", typeof(sbyte))]
+        [InlineData("System.Int16", typeof(short))]
+        [InlineData("System.String", typeof(string))]
+        [InlineData("System.UInt32", typeof(uint))]
+        [InlineData("System.UInt64", typeof(ulong))]
+        [InlineData("System.UInt16", typeof(ushort))]
+        [InlineData("System.Void", typeof(void))]
+        public void Type_keyword_disabled_FullName(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.NoKeywords));
+        }
+
         [Theory]
         [InlineData("A<int>", typeof(global::A<int>))]
         [InlineData("A<int, short>", typeof(global::N.A<int, short>))]
