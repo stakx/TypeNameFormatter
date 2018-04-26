@@ -63,22 +63,46 @@ namespace TypeNameFormatter
             else if (type.HasElementType)
             {
                 var elementType = type.GetElementType();
+
                 if (type.IsArray)
                 {
-                    stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
-
-                    var rank = type.GetArrayRank();
-                    if (rank == 1)
+                    if (elementType.IsArray == false)
                     {
-                        stringBuilder.Append("[]");
+                        stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+
+                        var rank = type.GetArrayRank();
+                        if (rank == 1)
+                        {
+                            stringBuilder.Append("[]");
+                        }
+                        else
+                        {
+                            Debug.Assert(rank > 1);
+
+                            stringBuilder.Append('[');
+                            stringBuilder.Append(',', rank - 1);
+                            stringBuilder.Append(']');
+                        }
                     }
                     else
                     {
-                        Debug.Assert(rank > 1);
+                        var queue = new Queue<Type>();
+                        var at = type;
+                        while (at.IsArray)
+                        {
+                            queue.Enqueue(at);
+                            at = at.GetElementType();
+                        }
 
-                        stringBuilder.Append('[');
-                        stringBuilder.Append(',', rank - 1);
-                        stringBuilder.Append(']');
+                        stringBuilder.AppendName(at, withNamespace, genericTypeArgs);
+                        while (queue.Count > 0)
+                        {
+                            at = queue.Dequeue();
+                            var rank = at.GetArrayRank();
+                            stringBuilder.Append('[');
+                            stringBuilder.Append(',', rank - 1);
+                            stringBuilder.Append(']');
+                        }
                     }
                 }
                 else if (type.IsByRef)
