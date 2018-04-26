@@ -10,17 +10,10 @@ namespace TypeNameFormatter
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TypeExtensions
     {
-        public static string GetFormattedName(this Type type)
+        public static string GetFormattedName(this Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendName(type);
-            return stringBuilder.ToString();
-        }
-
-        public static string GetFormattedFullName(this Type type)
-        {
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendFullName(type);
+            stringBuilder.AppendName(type, options);
             return stringBuilder.ToString();
         }
     }

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 
+using TypeNameFormatter.Internals;
+
 namespace TypeNameFormatter
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -36,24 +38,13 @@ namespace TypeNameFormatter
             };
         }
 
-        public static StringBuilder AppendName(this StringBuilder stringBuilder, Type type)
+        public static StringBuilder AppendName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
-            stringBuilder.AppendName(type, withNamespace: false);
+            stringBuilder.AppendName(type, options, type.IsGenericType ? type.GetGenericArguments() : null);
             return stringBuilder;
         }
 
-        public static StringBuilder AppendFullName(this StringBuilder stringBuilder, Type type)
-        {
-            stringBuilder.AppendName(type, withNamespace: true);
-            return stringBuilder;
-        }
-
-        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace)
-        {
-            stringBuilder.AppendName(type, withNamespace, type.IsGenericType ? type.GetGenericArguments() : null);
-        }
-
-        private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace, Type[] genericTypeArgs)
+        private static void AppendName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type[] genericTypeArgs)
         {
             if (typeKeywords.TryGetValue(type, out string typeKeyword))
             {
@@ -68,7 +59,7 @@ namespace TypeNameFormatter
                 {
                     if (elementType.IsArray == false)
                     {
-                        stringBuilder.AppendName(elementType, withNamespace);
+                        stringBuilder.AppendName(elementType, options);
 
                         var rank = type.GetArrayRank();
                         if (rank == 1)
@@ -94,7 +85,7 @@ namespace TypeNameFormatter
                             at = at.GetElementType();
                         }
 
-                        stringBuilder.AppendName(at, withNamespace);
+                        stringBuilder.AppendName(at, options);
                         while (queue.Count > 0)
                         {
                             at = queue.Dequeue();
@@ -108,11 +99,11 @@ namespace TypeNameFormatter
                 else if (type.IsByRef)
                 {
                     stringBuilder.Append("ref ");
-                    stringBuilder.AppendName(elementType, withNamespace);
+                    stringBuilder.AppendName(elementType, options);
                 }
                 else if (type.IsPointer)
                 {
-                    stringBuilder.AppendName(elementType, withNamespace);
+                    stringBuilder.AppendName(elementType, options);
                     stringBuilder.Append('*');
                 }
                 else
@@ -128,10 +119,10 @@ namespace TypeNameFormatter
             {
                 if (type.IsNested)
                 {
-                    stringBuilder.AppendName(type.DeclaringType, withNamespace, genericTypeArgs);
+                    stringBuilder.AppendName(type.DeclaringType, options, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
-                else if (withNamespace)
+                else if (options.IsSet(TypeNameFormatOptions.Namespaces))
                 {
                     string @namespace = type.Namespace;
                     if (string.IsNullOrEmpty(@namespace) == false)
@@ -178,7 +169,7 @@ namespace TypeNameFormatter
                             stringBuilder.Append(", ");
                         }
 
-                        stringBuilder.AppendName(genericTypeArgs[i], withNamespace);
+                        stringBuilder.AppendName(genericTypeArgs[i], options);
                     }
 
                     stringBuilder.Append('>');

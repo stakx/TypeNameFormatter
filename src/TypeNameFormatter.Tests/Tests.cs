@@ -23,7 +23,7 @@ namespace TypeNameFormatter
         [InlineData("N.O.A", typeof(global::N.O.A))]
         public void Simple_type_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
 
@@ -48,7 +48,7 @@ namespace TypeNameFormatter
         [InlineData("N.O.A.B.C", typeof(global::N.O.A.B.C))]
         public void Nested_type_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -72,7 +72,7 @@ namespace TypeNameFormatter
         [InlineData("N.O.A<T, U>", typeof(global::N.O.A<,>))]
         public void Generic_type_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -102,7 +102,7 @@ namespace TypeNameFormatter
         [InlineData("N.O.A<N.O.A>", typeof(global::N.O.A<global::N.O.A>))]
         public void Generic_type_instantiation_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -120,7 +120,7 @@ namespace TypeNameFormatter
         [InlineData("N.O.A<A<A>>", typeof(global::N.O.A<global::A<global::A>>))]
         public void Recursive_generic_type_instantiation_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -156,13 +156,13 @@ namespace TypeNameFormatter
         [Fact]
         public void Nested_generic_type_instantiation_FullName()
         {
-            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedFullName());
+            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Fact]
         public void Nested_recursive_generic_type_instantiation_FullName()
         {
-            Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedFullName());
+            Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -204,7 +204,7 @@ namespace TypeNameFormatter
         [InlineData("void", typeof(void))]
         public void Type_keyword_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -220,7 +220,7 @@ namespace TypeNameFormatter
         [InlineData("N.A<int, short>", typeof(global::N.A<int, short>))]
         public void Type_keyword_as_generic_type_argument_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -240,7 +240,7 @@ namespace TypeNameFormatter
         [InlineData("object[]", typeof(object[]))]
         public void Array_type_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -271,7 +271,7 @@ namespace TypeNameFormatter
         public void Reference_type_FullName()
         {
             var type = typeof(global::N.A).MakeByRefType();
-            Assert.Equal("ref N.A", type.GetFormattedFullName());
+            Assert.Equal("ref N.A", type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -285,7 +285,7 @@ namespace TypeNameFormatter
         public void Array_of_generic_type_instantiation_of_jagged_array_type()
         {
             var type = typeof(global::N.A<int*[,][][,,]>[]);
-            Assert.Equal("N.A<int*[,][][,,]>[]", type.GetFormattedFullName());
+            Assert.Equal("N.A<int*[,][][,,]>[]", type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
     }
 }
