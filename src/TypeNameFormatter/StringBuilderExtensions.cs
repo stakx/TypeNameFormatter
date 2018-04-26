@@ -2,6 +2,7 @@
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
@@ -10,6 +11,30 @@ namespace TypeNameFormatter
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static partial class StringBuilderExtensions
     {
+        private static Dictionary<Type, string> typeKeywords;
+
+        static StringBuilderExtensions()
+        {
+            typeKeywords = new Dictionary<Type, string>()
+            {
+                [typeof(byte)] = "byte",
+                [typeof(char)] = "char",
+                [typeof(decimal)] = "decimal",
+                [typeof(double)] = "double",
+                [typeof(float)] = "float",
+                [typeof(int)] = "int",
+                [typeof(long)] = "long",
+                [typeof(object)] = "object",
+                [typeof(sbyte)] = "sbyte",
+                [typeof(short)] = "short",
+                [typeof(string)] = "string",
+                [typeof(uint)] = "uint",
+                [typeof(ulong)] = "ulong",
+                [typeof(ushort)] = "ushort",
+                [typeof(void)] = "void",
+            };
+        }
+
         public static StringBuilder AppendName(this StringBuilder stringBuilder, Type type)
         {
             stringBuilder.AppendName(type, withNamespace: false);
@@ -29,6 +54,12 @@ namespace TypeNameFormatter
 
         private static void AppendName(this StringBuilder stringBuilder, Type type, bool withNamespace, Type[] genericTypeArgs)
         {
+            if (typeKeywords.TryGetValue(type, out string typeKeyword))
+            {
+                stringBuilder.Append(typeKeyword);
+                return;
+            }
+
             if (type.IsGenericParameter == false)
             {
                 if (type.IsNested)

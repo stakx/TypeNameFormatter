@@ -164,5 +164,63 @@ namespace TypeNameFormatter
         {
             Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedFullName());
         }
+
+        [Theory]
+        [InlineData("byte", typeof(byte))]
+        [InlineData("char", typeof(char))]
+        [InlineData("decimal", typeof(decimal))]
+        [InlineData("double", typeof(double))]
+        [InlineData("float", typeof(float))]
+        [InlineData("int", typeof(int))]
+        [InlineData("long", typeof(long))]
+        [InlineData("object", typeof(object))]
+        [InlineData("sbyte", typeof(sbyte))]
+        [InlineData("short", typeof(short))]
+        [InlineData("string", typeof(string))]
+        [InlineData("uint", typeof(uint))]
+        [InlineData("ulong", typeof(ulong))]
+        [InlineData("ushort", typeof(ushort))]
+        [InlineData("void", typeof(void))]
+        public void Type_keyword_Name(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+        }
+
+        [Theory]
+        [InlineData("byte", typeof(byte))]
+        [InlineData("char", typeof(char))]
+        [InlineData("decimal", typeof(decimal))]
+        [InlineData("double", typeof(double))]
+        [InlineData("float", typeof(float))]
+        [InlineData("int", typeof(int))]
+        [InlineData("long", typeof(long))]
+        [InlineData("object", typeof(object))]
+        [InlineData("sbyte", typeof(sbyte))]
+        [InlineData("short", typeof(short))]
+        [InlineData("string", typeof(string))]
+        [InlineData("uint", typeof(uint))]
+        [InlineData("ulong", typeof(ulong))]
+        [InlineData("ushort", typeof(ushort))]
+        [InlineData("void", typeof(void))]
+        public void Type_keyword_FullName(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+        }
+
+        [Theory]
+        [InlineData("A<int>", typeof(global::A<int>))]
+        [InlineData("A<int, short>", typeof(global::N.A<int, short>))]
+        public void Type_keyword_as_generic_type_argument_Name(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+        }
+
+        [Theory]
+        [InlineData("A<int>", typeof(global::A<int>))]
+        [InlineData("N.A<int, short>", typeof(global::N.A<int, short>))]
+        public void Type_keyword_as_generic_type_argument_FullName(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
+        }
     }
 }
