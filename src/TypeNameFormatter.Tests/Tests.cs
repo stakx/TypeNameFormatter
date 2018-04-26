@@ -242,5 +242,26 @@ namespace TypeNameFormatter
         {
             Assert.Equal(expectedFormattedName, type.GetFormattedFullName());
         }
+
+        [Fact]
+        public void Reference_type_Name()
+        {
+            var type = typeof(global::N.A).MakeByRefType();
+            Assert.Equal("ref A", type.GetFormattedName());
+        }
+
+        [Fact]
+        public void Reference_type_FullName()
+        {
+            var type = typeof(global::N.A).MakeByRefType();
+            Assert.Equal("ref N.A", type.GetFormattedFullName());
+        }
+
+        [Theory]
+        [InlineData("void*", typeof(void*))]
+        public void Pointer_type_Name(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+        }
     }
 }

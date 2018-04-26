@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace TypeNameFormatter
@@ -67,9 +68,19 @@ namespace TypeNameFormatter
                     stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
                     stringBuilder.Append("[]");
                 }
+                else if (type.IsByRef)
+                {
+                    stringBuilder.Append("ref ");
+                    stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+                }
+                else if (type.IsPointer)
+                {
+                    stringBuilder.AppendName(elementType, withNamespace, genericTypeArgs);
+                    stringBuilder.Append('*');
+                }
                 else
                 {
-                    throw new NotImplementedException();
+                    Debug.Fail("Only array, by-ref, and pointer types have an element type. This should be unreachable.");
                 }
 
                 return;
