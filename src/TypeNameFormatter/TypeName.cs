@@ -12,11 +12,11 @@ using TypeNameFormatter.Internals;
 namespace TypeNameFormatter
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static partial class StringBuilderExtensions
+    public static class TypeName
     {
         private static Dictionary<Type, string> typeKeywords;
 
-        static StringBuilderExtensions()
+        static TypeName()
         {
             typeKeywords = new Dictionary<Type, string>()
             {
@@ -38,13 +38,20 @@ namespace TypeNameFormatter
             };
         }
 
-        public static StringBuilder AppendName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
+        public static StringBuilder AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
-            stringBuilder.AppendName(type, options, type.IsGenericType ? type.GetGenericArguments() : null);
+            stringBuilder.AppendFormattedName(type, options, type.IsGenericType ? type.GetGenericArguments() : null);
             return stringBuilder;
         }
 
-        private static void AppendName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type[] genericTypeArgs)
+        public static string GetFormattedName(this Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormattedName(type, options);
+            return stringBuilder.ToString();
+        }
+
+        private static void AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type[] genericTypeArgs)
         {
             if (options.IsSet(TypeNameFormatOptions.NoKeywords) == false && typeKeywords.TryGetValue(type, out string typeKeyword))
             {
@@ -59,7 +66,7 @@ namespace TypeNameFormatter
                 {
                     if (elementType.IsArray == false)
                     {
-                        stringBuilder.AppendName(elementType, options);
+                        stringBuilder.AppendFormattedName(elementType, options);
 
                         var rank = type.GetArrayRank();
                         if (rank == 1)
@@ -85,7 +92,7 @@ namespace TypeNameFormatter
                             at = at.GetElementType();
                         }
 
-                        stringBuilder.AppendName(at, options);
+                        stringBuilder.AppendFormattedName(at, options);
                         while (queue.Count > 0)
                         {
                             at = queue.Dequeue();
@@ -99,11 +106,11 @@ namespace TypeNameFormatter
                 else if (type.IsByRef)
                 {
                     stringBuilder.Append("ref ");
-                    stringBuilder.AppendName(elementType, options);
+                    stringBuilder.AppendFormattedName(elementType, options);
                 }
                 else if (type.IsPointer)
                 {
-                    stringBuilder.AppendName(elementType, options);
+                    stringBuilder.AppendFormattedName(elementType, options);
                     stringBuilder.Append('*');
                 }
                 else
@@ -119,7 +126,7 @@ namespace TypeNameFormatter
             {
                 if (type.IsNested)
                 {
-                    stringBuilder.AppendName(type.DeclaringType, options, genericTypeArgs);
+                    stringBuilder.AppendFormattedName(type.DeclaringType, options, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
                 else if (options.IsSet(TypeNameFormatOptions.Namespaces))
@@ -169,7 +176,7 @@ namespace TypeNameFormatter
                             stringBuilder.Append(", ");
                         }
 
-                        stringBuilder.AppendName(genericTypeArgs[i], options);
+                        stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
                     }
 
                     stringBuilder.Append('>');

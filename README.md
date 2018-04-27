@@ -31,7 +31,7 @@ Formatting any `Type` involves more special cases than you might expect (such as
 
 By importing the `TypeNameFormatter` namespace, the following extension methods become available:
 
-* **`stringBuilder.AppendName(Type type, [TypeNameFormatOptions options])`**:  
+* **`stringBuilder.AppendFormattedName(Type type, [TypeNameFormatOptions options])`**:  
   Appends a C#-formatted type name to the given `StringBuilder`.
  
 * **`type.GetFormattedName([TypeNameFormatOptions options])`**:  
