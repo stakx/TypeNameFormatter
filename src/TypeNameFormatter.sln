@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeNameFormatter", "TypeNa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeNameFormatter.Tests", "TypeNameFormatter.Tests\TypeNameFormatter.Tests.csproj", "{CBDD2AB7-D1FD-44EE-84F7-75FC43D9FA23}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeNameFormatter.Benchmarks", "TypeNameFormatter.Benchmarks\TypeNameFormatter.Benchmarks.csproj", "{BEBCAF38-1D13-4F3A-AE20-0E0F615ECA70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CBDD2AB7-D1FD-44EE-84F7-75FC43D9FA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBDD2AB7-D1FD-44EE-84F7-75FC43D9FA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBDD2AB7-D1FD-44EE-84F7-75FC43D9FA23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEBCAF38-1D13-4F3A-AE20-0E0F615ECA70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEBCAF38-1D13-4F3A-AE20-0E0F615ECA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEBCAF38-1D13-4F3A-AE20-0E0F615ECA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEBCAF38-1D13-4F3A-AE20-0E0F615ECA70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

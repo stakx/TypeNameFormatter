@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TypeNameFormatter\TypeNameFormatter.csproj" />
+  </ItemGroup>
+
+</Project>
