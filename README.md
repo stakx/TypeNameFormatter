@@ -67,7 +67,7 @@ If you think you've found a bug, please raise an [issue](https://github.com/stak
        using (var provider = new CSharpCodeProvider())
        {
            var typeReference = new CodeTypeReference(type);
-           return provider.GetTypeOutput(typeReference));
+           return provider.GetTypeOutput(typeReference);
        }
    }
    ```
