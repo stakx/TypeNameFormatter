@@ -52,15 +52,27 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("A<>", typeof(global::A<>))]
+        [InlineData("A<>", typeof(global::N.A<>))]
+        [InlineData("A<>", typeof(global::N.O.A<>))]
+        [InlineData("A<,>", typeof(global::A<,>))]
+        [InlineData("A<,>", typeof(global::N.A<,>))]
+        [InlineData("A<,>", typeof(global::N.O.A<,>))]
+        public void Generic_type_Name(string expectedFormattedName, Type type)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+        }
+
+        [Theory]
         [InlineData("A<T>", typeof(global::A<>))]
         [InlineData("A<T>", typeof(global::N.A<>))]
         [InlineData("A<T>", typeof(global::N.O.A<>))]
         [InlineData("A<T, U>", typeof(global::A<,>))]
         [InlineData("A<T, U>", typeof(global::N.A<,>))]
         [InlineData("A<T, U>", typeof(global::N.O.A<,>))]
-        public void Generic_type_Name(string expectedFormattedName, Type type)
+        public void Generic_type_with_parameter_names_Name(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.GenericParameterNames));
         }
 
         [Theory]
@@ -70,9 +82,9 @@ namespace TypeNameFormatter
         [InlineData("A<T, U>", typeof(global::A<,>))]
         [InlineData("N.A<T, U>", typeof(global::N.A<,>))]
         [InlineData("N.O.A<T, U>", typeof(global::N.O.A<,>))]
-        public void Generic_type_FullName(string expectedFormattedName, Type type)
+        public void Generic_type_with_parameter_names_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.GenericParameterNames));
         }
 
         [Theory]
@@ -150,19 +162,19 @@ namespace TypeNameFormatter
         [InlineData("A<T, U>.B<V, W>.C<X, Y>", typeof(global::A<,>.B<,>.C<,>))]
         public void Nested_generic_type(string expectedName, Type type)
         {
-            Assert.Equal(expectedName, type.GetFormattedName());
+            Assert.Equal(expectedName, type.GetFormattedName(TypeNameFormatOptions.GenericParameterNames));
         }
 
         [Fact]
         public void Nested_generic_type_instantiation_FullName()
         {
-            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
+            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.GenericParameterNames));
         }
 
         [Fact]
         public void Nested_recursive_generic_type_instantiation_FullName()
         {
-            Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
+            Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.GenericParameterNames));
         }
 
         [Theory]

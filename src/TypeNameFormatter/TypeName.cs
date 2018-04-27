@@ -152,6 +152,10 @@ namespace TypeNameFormatter
                     }
                 }
             }
+            else if (options.IsSet(TypeNameFormatOptions.GenericParameterNames) == false)
+            {
+                return;
+            }
 
             var name = type.Name;
             if (genericTypeArgs != null)
@@ -186,7 +190,14 @@ namespace TypeNameFormatter
                     {
                         if (i > ownGenericTypeArgStartIndex)
                         {
-                            stringBuilder.Append(", ");
+                            if (options.IsSet(TypeNameFormatOptions.GenericParameterNames) || genericTypeArgs[i].IsGenericParameter == false)
+                            {
+                                stringBuilder.Append(", ");
+                            }
+                            else
+                            {
+                                stringBuilder.Append(',');
+                            }
                         }
 
                         stringBuilder.AppendFormattedName(genericTypeArgs[i], options);

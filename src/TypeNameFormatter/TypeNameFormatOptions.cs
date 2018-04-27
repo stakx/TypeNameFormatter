@@ -17,13 +17,22 @@ namespace TypeNameFormatter
         Default = 0,
 
         /// <summary>
+        ///   Specifies that a open generic type's parameter names should be included.
+        ///   <example>
+        ///     For example, the open generic type <see cref="IEquatable{T}"/> is formatted as <c>"IEquatable&lt;&gt;"</c> by default.
+        ///     When this flag is specified, it will be formatted as <c>"IEquatable&lt;T&gt;"</c>.
+        ///   </example>
+        /// </summary>
+        GenericParameterNames = 1,
+
+        /// <summary>
         ///   Specifies that a type's namespace should be included.
         ///   <example>
         ///     For example, the type <see cref="Action"/> is formatted as <c>"Action"</c> by default.
         ///     When this flag is specified, it will be formatted as <c>"System.Action"</c>.
         ///   </example>
         /// </summary>
-        Namespaces = 1,
+        Namespaces = 2,
 
         /// <summary>
         ///   Specifies that primitive types should not be mapped to their corresponding C# language keywords.
@@ -32,6 +41,6 @@ namespace TypeNameFormatter
         ///     When this flag is specified, it will be formatted as <c>"Int32"</c>.
         ///   </example>
         /// </summary>
-        NoKeywords = 2,
+        NoKeywords = 4,
     }
 }

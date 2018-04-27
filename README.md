@@ -37,13 +37,16 @@ By importing the `TypeNameFormatter` namespace, the following extension methods 
 * **`type.GetFormattedName([TypeNameFormatOptions options])`**:  
   Returns a C#-formatted type name as a string. (This is a convenience method that does exactly the same as the above, using a throw-away `StringBuilder`.)
 
-Both methods allow you to specify any combination of the following options:
+Both methods allow you to specify any combination of the following `TypeNameFormatOptions` flags:
 
-* **`TypeNameFormatOptions.Namespaces`**:  
-  Specifies that namespaces should be included.
+* **`GenericParameterNames`**:  
+  Parameter names of an open generic type should be included. (For example, `IEnumerable<T>` instead of `IEnumerable<>`. Note that this setting does not affect closed generic types; their arguments are always included.)
 
-* **`TypeNameFormatOptions.NoKeywords`**:  
-  Specifies that primitive types should not be mapped to their corresponding C# language keywords.
+* **`Namespaces`**:  
+  Namespaces should be included. (For example, `System.Action` instead of `Action`.)
+
+* **`NoKeywords`**:  
+  Primitive types should not be mapped to their corresponding C# language keywords. (For example, `Int32` instead of `int`.)
 
 
 ## But it doesn't format \<some type\> correctly!
