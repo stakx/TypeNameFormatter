@@ -42,6 +42,9 @@ Both methods allow you to specify any combination of the following options:
 * **`TypeNameFormatOptions.Namespaces`**:  
   Specifies that namespaces should be included.
 
+* **`TypeNameFormatOptions.NoKeywords`**:  
+  Specifies that primitive types should not be mapped to their corresponding C# language keywords.
+
 
 ## But it doesn't format \<some type\> correctly!
 
