@@ -38,12 +38,25 @@ namespace TypeNameFormatter
             };
         }
 
+        /// <summary>
+        ///   Appends a string representation of the specified type to this instance.
+        /// </summary>
+        /// <param name="stringBuilder">The <see cref="StringBuilder"/> instance to which to append.</param>
+        /// <param name="type">The <see cref="Type"/> of which a string representation should be appended.</param>
+        /// <param name="options">Any combination of formatting options that should be applied. (Optional.)</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
         public static StringBuilder AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
             stringBuilder.AppendFormattedName(type, options, type.IsGenericType ? type.GetGenericArguments() : null);
             return stringBuilder;
         }
 
+        /// <summary>
+        ///   Gets a string representation of this instance.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of which a string representation is requested.</param>
+        /// <param name="options">Any combination of formatting options that should be applied. (Optional.)</param>
+        /// <returns>A string representation of this instance.</returns>
         public static string GetFormattedName(this Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
             var stringBuilder = new StringBuilder();
