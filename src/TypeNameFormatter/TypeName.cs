@@ -47,7 +47,7 @@ namespace TypeNameFormatter
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public static StringBuilder AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
-            stringBuilder.AppendFormattedName(type, options, type.IsGenericType ? type.GetGenericArguments() : null);
+            stringBuilder.AppendFormattedName(type, options, type.IsGenericType() ? type.GetGenericTypeArguments() : null);
             return stringBuilder;
         }
 
@@ -128,7 +128,7 @@ namespace TypeNameFormatter
                 }
                 else
                 {
-                    Debug.Fail("Only array, by-ref, and pointer types have an element type. This should be unreachable.");
+                    Debug.Assert(false, "Only array, by-ref, and pointer types have an element type. This should be unreachable.");
                 }
 
                 return;
@@ -170,12 +170,12 @@ namespace TypeNameFormatter
                     stringBuilder.Append(name);
                 }
 
-                var ownGenericTypeParamCount = type.GetGenericArguments().Length;
+                var ownGenericTypeParamCount = type.GetGenericTypeArguments().Length;
 
                 int ownGenericTypeArgStartIndex = 0;
                 if (type.IsNested)
                 {
-                    var outerTypeGenericTypeParamCount = type.DeclaringType.GetGenericArguments().Length;
+                    var outerTypeGenericTypeParamCount = type.DeclaringType.GetGenericTypeArguments().Length;
                     if (ownGenericTypeParamCount >= outerTypeGenericTypeParamCount)
                     {
                         ownGenericTypeArgStartIndex = outerTypeGenericTypeParamCount;
