@@ -77,42 +77,26 @@ namespace TypeNameFormatter
 
                 if (type.IsArray)
                 {
-                    if (elementType.IsArray == false)
-                    {
-                        stringBuilder.AppendFormattedName(elementType, options);
+                    var ranks = new Queue<int>();
+                    ranks.Enqueue(type.GetArrayRank());
+                    HandleArrayElementType(elementType, ranks);
 
-                        var rank = type.GetArrayRank();
-                        if (rank == 1)
+                    void HandleArrayElementType(Type et, Queue<int> r)
+                    {
+                        if (et.IsArray)
                         {
-                            stringBuilder.Append("[]");
+                            r.Enqueue(et.GetArrayRank());
+                            HandleArrayElementType(et.GetElementType(), r);
                         }
                         else
                         {
-                            Debug.Assert(rank > 1);
-
-                            stringBuilder.Append('[');
-                            stringBuilder.Append(',', rank - 1);
-                            stringBuilder.Append(']');
-                        }
-                    }
-                    else
-                    {
-                        var queue = new Queue<Type>();
-                        var at = type;
-                        while (at.IsArray)
-                        {
-                            queue.Enqueue(at);
-                            at = at.GetElementType();
-                        }
-
-                        stringBuilder.AppendFormattedName(at, options);
-                        while (queue.Count > 0)
-                        {
-                            at = queue.Dequeue();
-                            var rank = at.GetArrayRank();
-                            stringBuilder.Append('[');
-                            stringBuilder.Append(',', rank - 1);
-                            stringBuilder.Append(']');
+                            stringBuilder.AppendFormattedName(et, options);
+                            while (r.Count > 0)
+                            {
+                                stringBuilder.Append('[');
+                                stringBuilder.Append(',', r.Dequeue() - 1);
+                                stringBuilder.Append(']');
+                            }
                         }
                     }
                 }
