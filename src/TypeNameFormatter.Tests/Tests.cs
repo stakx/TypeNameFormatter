@@ -1,11 +1,12 @@
 ﻿// Copyright (c) 2018 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
-using System;
-using Xunit;
-
 namespace TypeNameFormatter
 {
+    using System;
+
+    using Xunit;
+
     public class Tests
     {
         [Theory]

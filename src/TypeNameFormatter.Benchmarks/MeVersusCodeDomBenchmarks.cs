@@ -1,15 +1,15 @@
 ﻿// Copyright (c) 2018 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
-using System;
-using System.CodeDom;
-
-using BenchmarkDotNet.Attributes;
-
-using Microsoft.CSharp;
-
 namespace TypeNameFormatter.Benchmarks
 {
+    using System;
+    using System.CodeDom;
+
+    using BenchmarkDotNet.Attributes;
+
+    using Microsoft.CSharp;
+
     /// <summary>
     ///   Contains benchmarks that are used to compare performance of the main library against that of Code DOM.
     /// </summary>

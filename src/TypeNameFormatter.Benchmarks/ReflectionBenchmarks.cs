@@ -1,12 +1,12 @@
 ﻿// Copyright (c) 2018 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
-using System;
-
-using BenchmarkDotNet.Attributes;
-
 namespace TypeNameFormatter.Benchmarks
 {
+    using System;
+
+    using BenchmarkDotNet.Attributes;
+
     /// <summary>
     ///   Contains benchmarks that are used to measure performance of several reflection scenarios relative to one another.
     ///   This is used to determine how to structure fast code paths in the main library.

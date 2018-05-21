@@ -1,16 +1,16 @@
 ﻿// Copyright (c) 2018 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
-
-using TypeNameFormatter.Internals;
-
 namespace TypeNameFormatter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Text;
+
+    using TypeNameFormatter.Internals;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TypeName
     {

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) 2018 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
-using System;
-
 namespace TypeNameFormatter
 {
+    using System;
+
     /// <summary>
     ///   An enumeration of available options when a <see cref="Type"/> name's string representation is requested.
     /// </summary>
