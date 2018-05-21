@@ -46,7 +46,7 @@ namespace TypeNameFormatter
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public static StringBuilder AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
-            stringBuilder.AppendFormattedName(type, options, type.IsGenericType() ? type.GetGenericTypeArguments() : null);
+            stringBuilder.AppendFormattedName(type, options, IsGenericType(type) ? GetGenericTypeArguments(type) : null);
             return stringBuilder;
         }
 
@@ -65,7 +65,7 @@ namespace TypeNameFormatter
 
         private static void AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type[] genericTypeArgs)
         {
-            if (options.IsSet(TypeNameFormatOptions.NoKeywords) == false && typeKeywords.TryGetValue(type, out string typeKeyword))
+            if (IsSet(TypeNameFormatOptions.NoKeywords, options) == false && typeKeywords.TryGetValue(type, out string typeKeyword))
             {
                 stringBuilder.Append(typeKeyword);
                 return;
@@ -125,7 +125,7 @@ namespace TypeNameFormatter
                     stringBuilder.AppendFormattedName(type.DeclaringType, options, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
-                else if (options.IsSet(TypeNameFormatOptions.Namespaces))
+                else if (IsSet(TypeNameFormatOptions.Namespaces, options))
                 {
                     string @namespace = type.Namespace;
                     if (string.IsNullOrEmpty(@namespace) == false)
@@ -135,7 +135,7 @@ namespace TypeNameFormatter
                     }
                 }
             }
-            else if (options.IsSet(TypeNameFormatOptions.GenericParameterNames) == false)
+            else if (IsSet(TypeNameFormatOptions.GenericParameterNames, options) == false)
             {
                 return;
             }
@@ -153,12 +153,12 @@ namespace TypeNameFormatter
                     stringBuilder.Append(name);
                 }
 
-                var ownGenericTypeParamCount = type.GetGenericTypeArguments().Length;
+                var ownGenericTypeParamCount = GetGenericTypeArguments(type).Length;
 
                 int ownGenericTypeArgStartIndex = 0;
                 if (type.IsNested)
                 {
-                    var outerTypeGenericTypeParamCount = type.DeclaringType.GetGenericTypeArguments().Length;
+                    var outerTypeGenericTypeParamCount = GetGenericTypeArguments(type.DeclaringType).Length;
                     if (ownGenericTypeParamCount >= outerTypeGenericTypeParamCount)
                     {
                         ownGenericTypeArgStartIndex = outerTypeGenericTypeParamCount;
@@ -173,7 +173,7 @@ namespace TypeNameFormatter
                     {
                         if (i > ownGenericTypeArgStartIndex)
                         {
-                            if (options.IsSet(TypeNameFormatOptions.GenericParameterNames) || genericTypeArgs[i].IsGenericParameter == false)
+                            if (IsSet(TypeNameFormatOptions.GenericParameterNames, options) || genericTypeArgs[i].IsGenericParameter == false)
                             {
                                 stringBuilder.Append(", ");
                             }
@@ -199,7 +199,7 @@ namespace TypeNameFormatter
         ///   Replacement for <see cref="M:System.Enum.HasFlag(System.Enum)"/>
         ///   which may be slow or even unavailable on earlier target frameworks.
         /// </remarks>
-        private static bool IsSet(this TypeNameFormatOptions options, TypeNameFormatOptions option)
+        private static bool IsSet(TypeNameFormatOptions option, TypeNameFormatOptions options)
         {
             return (options & option) == option;
         }
@@ -207,7 +207,7 @@ namespace TypeNameFormatter
         /// <remarks>
         ///   Allows uniform reflection across all target frameworks.
         /// </remarks>
-        private static Type[] GetGenericTypeArguments(this Type type)
+        private static Type[] GetGenericTypeArguments(Type type)
         {
 #if NETSTANDARD10
             return type.GenericTypeArguments;
@@ -219,7 +219,7 @@ namespace TypeNameFormatter
         /// <remarks>
         ///   Allows uniform reflection across all target frameworks.
         /// </remarks>
-        private static bool IsGenericType(this Type type)
+        private static bool IsGenericType(Type type)
         {
 #if NETSTANDARD10
             return type.GetTypeInfo().IsGenericType;
