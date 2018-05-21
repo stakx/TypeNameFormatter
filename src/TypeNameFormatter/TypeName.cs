@@ -7,9 +7,8 @@ namespace TypeNameFormatter
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Reflection;
     using System.Text;
-
-    using TypeNameFormatter.Internals;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TypeName
@@ -194,6 +193,39 @@ namespace TypeNameFormatter
             {
                 stringBuilder.Append(name);
             }
+        }
+
+        /// <remarks>
+        ///   Replacement for <see cref="M:System.Enum.HasFlag(System.Enum)"/>
+        ///   which may be slow or even unavailable on earlier target frameworks.
+        /// </remarks>
+        private static bool IsSet(this TypeNameFormatOptions options, TypeNameFormatOptions option)
+        {
+            return (options & option) == option;
+        }
+
+        /// <remarks>
+        ///   Allows uniform reflection across all target frameworks.
+        /// </remarks>
+        private static Type[] GetGenericTypeArguments(this Type type)
+        {
+#if NETSTANDARD10
+            return type.GenericTypeArguments;
+#else
+            return type.GetGenericArguments();
+#endif
+        }
+
+        /// <remarks>
+        ///   Allows uniform reflection across all target frameworks.
+        /// </remarks>
+        private static bool IsGenericType(this Type type)
+        {
+#if NETSTANDARD10
+            return type.GetTypeInfo().IsGenericType;
+#else
+            return type.IsGenericType;
+#endif
         }
     }
 }
