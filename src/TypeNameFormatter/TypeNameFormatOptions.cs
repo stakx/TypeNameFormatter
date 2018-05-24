@@ -9,7 +9,12 @@ namespace TypeNameFormatter
     ///   An enumeration of available options when a <see cref="Type"/> name's string representation is requested.
     /// </summary>
     [Flags]
-    public enum TypeNameFormatOptions
+#if TYPENAMEFORMATTER_INTERNAL
+    internal
+#else
+    public
+#endif
+    enum TypeNameFormatOptions
     {
         /// <summary>
         ///   The default type name formatting options.
