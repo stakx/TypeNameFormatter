@@ -8,7 +8,7 @@
 
   <PropertyGroup Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'">
     <DefineConstants Condition="'$(TypeNameFormatterInternal)' == 'True'">TYPENAMEFORMATTER_INTERNAL;$(DefineConstants)</DefineConstants>
-    <DefineConstants Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), `^net(coreapp|standard)1`))">TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION</DefineConstants>
+    <DefineConstants Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), `^net(coreapp|standard)1`))">TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION;$(DefineConstants)</DefineConstants>
     <CoreCompileDependsOn>_CompileTypeNameFormatter;$(CoreCompileDependsOn)</CoreCompileDependsOn>
   </PropertyGroup>
 
