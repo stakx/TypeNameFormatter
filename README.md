@@ -1,6 +1,7 @@
-﻿# TypeNameFormatter
+﻿![TypeNameFormatter](https://github.com/stakx/typenameformatter/raw/master/assets/icon-64x64.png "TypeNameFormatter")
 
-A small .NET library for formatting type names à la C#. 
+TypeNameFormatter is a small .NET library for formatting type names à la C#. 
+
 
 ## What is this good for?
 
