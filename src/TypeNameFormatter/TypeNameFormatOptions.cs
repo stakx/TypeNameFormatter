@@ -42,5 +42,14 @@ namespace TypeNameFormatter
         ///   </example>
         /// </summary>
         NoKeywords = 4,
+
+        /// <summary>
+        ///   Specifies that nullable types should not be simplified to C# question mark syntax.
+        ///   <example>
+        ///   For example, the type <see cref="Nullable{T}"/> of <see cref="Int32"/> is formatted as <c>"int?"</c> by default.
+        ///   When this flag is specified, it will be formatted as <c>"Nullable&lt;int&gt;"</c>.
+        ///   </example>
+        /// </summary>
+        NoNullableQuestionMark = 8,
     }
 }

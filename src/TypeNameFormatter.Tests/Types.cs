@@ -9,6 +9,10 @@ internal class A
         {
         }
     }
+
+    internal struct S
+    {
+    }
 }
 
 internal class A<T>
@@ -107,6 +111,10 @@ internal class A<T, U>
     }
 }
 
+internal struct S
+{
+}
+
 namespace N
 {
     internal class A
@@ -124,6 +132,10 @@ namespace N
     }
 
     internal class A<T, U>
+    {
+    }
+
+    internal struct S
     {
     }
 }

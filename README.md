@@ -48,6 +48,9 @@ Both methods allow you to specify any combination of the following `TypeNameForm
 * **`NoKeywords`**:  
   Primitive types should not be mapped to their corresponding C# language keywords. (For example, `Int32` instead of `int`.)
 
+* **`NoNullableQuestionMark`**:
+  Nullable types should not be formatted using C# question mark syntax. (For example, `Nullable<int>` instead of `int?`.)
+
 
 ## But it doesn't format \<some type\> correctly!
 

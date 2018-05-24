@@ -322,5 +322,21 @@ namespace TypeNameFormatter
             var type = typeof(global::N.A<int*[,][][,,]>[]);
             Assert.Equal("N.A<int*[,][][,,]>[]", type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
+
+        [Theory]
+        [InlineData("int?", typeof(int?), TypeNameFormatOptions.Default)]
+        [InlineData("Int32?", typeof(int?), TypeNameFormatOptions.NoKeywords)]
+        [InlineData("Nullable<int>", typeof(int?), TypeNameFormatOptions.NoNullableQuestionMark)]
+        [InlineData("Nullable<Int32>", typeof(int?), TypeNameFormatOptions.NoKeywords | TypeNameFormatOptions.NoNullableQuestionMark)]
+        [InlineData("S?", typeof(global::N.S?), TypeNameFormatOptions.Default)]
+        [InlineData("Nullable<S>", typeof(global::N.S?), TypeNameFormatOptions.NoNullableQuestionMark)]
+        [InlineData("N.S?", typeof(global::N.S?), TypeNameFormatOptions.Namespaces)]
+        [InlineData("System.Nullable<N.S>", typeof(global::N.S?), TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.NoNullableQuestionMark)]
+        [InlineData("A<S?>", typeof(global::A<global::S?>), TypeNameFormatOptions.Default)]
+        [InlineData("A<N.S?>", typeof(global::A<global::N.S?>), TypeNameFormatOptions.Namespaces)]
+        public void Nullable_type(string expectedFormattedName, Type type, TypeNameFormatOptions options)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(options));
+        }
     }
 }
