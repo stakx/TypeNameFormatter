@@ -215,7 +215,7 @@ namespace TypeNameFormatter
         /// </remarks>
         private static Type[] GetGenericTypeArguments(Type type)
         {
-#if NETSTANDARD10
+#if TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION
             return type.GenericTypeArguments;
 #else
             return type.GetGenericArguments();
@@ -227,7 +227,7 @@ namespace TypeNameFormatter
         /// </remarks>
         private static bool IsGenericType(Type type)
         {
-#if NETSTANDARD10
+#if TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION
             return type.GetTypeInfo().IsGenericType;
 #else
             return type.IsGenericType;

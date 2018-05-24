@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants Condition="'$(TargetFramework)'=='netstandard1.0'">$(DefineConstants);NETSTANDARD10</DefineConstants>
+    <DefineConstants Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), `^net(coreapp|standard)1`))">TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION</DefineConstants>
   </PropertyGroup>
 
 </Project>
