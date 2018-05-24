@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+
+  <PropertyGroup>
+    <_TypeNameFormatterCompatibleWithProject Condition="'$(Language)' == 'C#'">True</_TypeNameFormatterCompatibleWithProject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'">
+    <DefineConstants Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), `^net(coreapp|standard)1`))">TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION</DefineConstants>
+    <CoreCompileDependsOn>_CompileTypeNameFormatter;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'">
+    <_TypeNameFormatterInputs Include="$(MSBuildThisFileDirectory)TypeName.cs"/>
+    <_TypeNameFormatterInputs Include="$(MSBuildThisFileDirectory)TypeNameFormatOptions.cs"/>
+    <_TypeNameFormatterOutputs Include="@(_TypeNameFormatterInputs -> '$(IntermediateOutputPath)%(Filename).g.cs')"/>
+  </ItemGroup>
+
+  <Target Name="_CopyTypeNameFormatter" Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'" Inputs="@(_TypeNameFormatterInputs)" Outputs="@(_TypeNameFormatterOutputs)">
+    <MakeDir Condition="!Exists('$(IntermediateOutputPath)')" Directories="$(IntermediateOutputPath)"/>
+    <Copy SourceFiles="@(_TypeNameFormatterInputs)" DestinationFiles="@(_TypeNameFormatterOutputs)"/>
+  </Target>
+
+  <Target Name="_CompileTypeNameFormatter" Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'" DependsOnTargets="_CopyTypeNameFormatter">
+    <ItemGroup>
+      <Compile Include="@(_TypeNameFormatterOutputs)"/>
+    </ItemGroup>
+  </Target>
+
+</Project>
