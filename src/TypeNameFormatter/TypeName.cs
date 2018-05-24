@@ -125,7 +125,7 @@ namespace TypeNameFormatter
                     stringBuilder.AppendFormattedName(type.DeclaringType, options, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
-                else if (IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && genericTypeArgs?.Length == 1 && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                else if (IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && IsGenericType(type) && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     stringBuilder.AppendFormattedName(genericTypeArgs[0], options);
                     stringBuilder.Append('?');
