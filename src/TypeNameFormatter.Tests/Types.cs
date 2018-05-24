@@ -10,6 +10,10 @@ internal class A
         }
     }
 
+    internal class B<U>
+    {
+    }
+
     internal struct S
     {
     }

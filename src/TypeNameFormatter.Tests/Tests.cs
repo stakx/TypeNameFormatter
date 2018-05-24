@@ -137,6 +137,7 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("A.B<U>", typeof(global::A.B<>))]
         [InlineData("A<T>.B", typeof(global::A<>.B))]
         [InlineData("A<T>.B.C", typeof(global::A<>.B.C))]
         [InlineData("A<T>.B.C<U>", typeof(global::A<>.B.C<>))]
