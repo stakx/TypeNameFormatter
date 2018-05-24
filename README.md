@@ -2,6 +2,8 @@
 
 TypeNameFormatter is a small .NET library for formatting type names à la C#. 
 
+[![NuGet badge](https://img.shields.io/nuget/v/TypeNameFormatter.Sources.svg)](https://www.nuget.org/packages/TypeNameFormatter.Sources "Package available on NuGet.org")
+
 
 ## What is this good for?
 
