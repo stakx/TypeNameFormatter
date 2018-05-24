@@ -11,7 +11,12 @@ namespace TypeNameFormatter
     using System.Text;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class TypeName
+#if TYPENAMEFORMATTER_INTERNAL
+    internal
+#else
+    public
+#endif
+    static class TypeName
     {
         private static Dictionary<Type, string> typeKeywords;
 
