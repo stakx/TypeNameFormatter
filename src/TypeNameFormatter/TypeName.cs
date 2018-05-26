@@ -10,6 +10,7 @@ namespace TypeNameFormatter
     using System.Reflection;
     using System.Text;
 
+    [DebuggerStepThrough]
     [EditorBrowsable(EditorBrowsableState.Never)]
 #if TYPENAMEFORMATTER_INTERNAL
     internal
