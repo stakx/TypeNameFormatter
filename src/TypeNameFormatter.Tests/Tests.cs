@@ -328,6 +328,7 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("Nullable<>", typeof(global::System.Nullable<>), TypeNameFormatOptions.Default)]
         [InlineData("int?", typeof(int?), TypeNameFormatOptions.Default)]
         [InlineData("Int32?", typeof(int?), TypeNameFormatOptions.NoKeywords)]
         [InlineData("Nullable<int>", typeof(int?), TypeNameFormatOptions.NoNullableQuestionMark)]
@@ -344,6 +345,8 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("ValueTuple<,>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.Default)]
+        [InlineData("ValueTuple<T1, T2>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.GenericParameterNames)]
         [InlineData("(bool, int)", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.Default)]
         [InlineData("ValueTuple<bool, int>", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.NoTuple)]
         [InlineData("(A, N.S?)", typeof(System.ValueTuple<global::A, global::N.S?>), TypeNameFormatOptions.Namespaces)]

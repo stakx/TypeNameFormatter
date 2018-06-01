@@ -127,20 +127,20 @@ namespace TypeNameFormatter
 
             if (type.IsGenericParameter == false)
             {
-                var isGenericType = IsGenericType(type);
+                var isConstructedGenericType = IsConstructedGenericType(type);
 
                 if (type.IsNested)
                 {
                     stringBuilder.AppendFormattedName(type.DeclaringType, options, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
-                else if (isGenericType && IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                else if (isConstructedGenericType && IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     stringBuilder.AppendFormattedName(genericTypeArgs[0], options);
                     stringBuilder.Append('?');
                     return;
                 }
-                else if (isGenericType && IsSet(TypeNameFormatOptions.NoTuple, options) == false && type.Name.StartsWith("ValueTuple`", StringComparison.Ordinal) && type.Namespace == "System")
+                else if (isConstructedGenericType && IsSet(TypeNameFormatOptions.NoTuple, options) == false && type.Name.StartsWith("ValueTuple`", StringComparison.Ordinal) && type.Namespace == "System")
                 {
                     stringBuilder.Append('(');
                     for (int i = 0, n = genericTypeArgs.Length; i < n; ++i)
@@ -256,6 +256,18 @@ namespace TypeNameFormatter
             return type.GetTypeInfo().IsGenericType;
 #else
             return type.IsGenericType;
+#endif
+        }
+
+        /// <remarks>
+        ///   Allows uniform reflection across all target frameworks.
+        /// </remarks>
+        private static bool IsConstructedGenericType(Type type)
+        {
+#if TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION
+            return type.IsConstructedGenericType;
+#else
+            return type.IsGenericType && !type.IsGenericTypeDefinition;
 #endif
         }
     }
