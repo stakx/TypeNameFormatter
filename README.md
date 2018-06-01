@@ -54,6 +54,9 @@ Both methods allow you to specify any combination of the following `TypeNameForm
 * **`NoNullableQuestionMark`**:
   Nullable types should not be formatted using C# question mark syntax. (For example, `Nullable<int>` instead of `int?`.)
 
+* **`NoTuple`**:
+  Value tuple types should not be formatted using C# tuple syntax. (For example, `ValueTuple<bool, int>` instead of `(bool, int)`.)
+
 
 ## But it doesn't format \<some type\> correctly!
 
