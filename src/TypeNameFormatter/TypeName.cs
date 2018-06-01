@@ -127,15 +127,33 @@ namespace TypeNameFormatter
 
             if (type.IsGenericParameter == false)
             {
+                var isGenericType = IsGenericType(type);
+
                 if (type.IsNested)
                 {
                     stringBuilder.AppendFormattedName(type.DeclaringType, options, genericTypeArgs);
                     stringBuilder.Append('.');
                 }
-                else if (IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && IsGenericType(type) && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                else if (isGenericType && IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     stringBuilder.AppendFormattedName(genericTypeArgs[0], options);
                     stringBuilder.Append('?');
+                    return;
+                }
+                else if (isGenericType && IsSet(TypeNameFormatOptions.NoTuple, options) == false && type.Name.StartsWith("ValueTuple`", StringComparison.Ordinal) && type.Namespace == "System")
+                {
+                    stringBuilder.Append('(');
+                    for (int i = 0, n = genericTypeArgs.Length; i < n; ++i)
+                    {
+                        if (i > 0)
+                        {
+                            stringBuilder.Append(", ");
+                        }
+
+                        stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
+                    }
+
+                    stringBuilder.Append(')');
                     return;
                 }
                 else if (IsSet(TypeNameFormatOptions.Namespaces, options))

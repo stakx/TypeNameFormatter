@@ -56,5 +56,15 @@ namespace TypeNameFormatter
         ///   </example>
         /// </summary>
         NoNullableQuestionMark = 8,
+
+        /// <summary>
+        ///   Specifies that value tuple types should not be transformed to C# tuple syntax.
+        ///   <example>
+        ///   For example, the type <see cref="T:System.ValueTuple`2"/> of <see cref="Boolean"/>, <see cref="Int32"/>
+        ///   is formatted as <c>"(bool, int)"</c> by default. When this flag is specified,
+        ///   it will be formatted as <c>"ValueTuple&lt;bool, int&gt;"</c>.
+        ///   </example>
+        /// </summary>
+        NoTuple = 16,
     }
 }
