@@ -25,6 +25,7 @@ namespace TypeNameFormatter
         {
             typeKeywords = new Dictionary<Type, string>()
             {
+                [typeof(bool)] = "bool",
                 [typeof(byte)] = "byte",
                 [typeof(char)] = "char",
                 [typeof(decimal)] = "decimal",

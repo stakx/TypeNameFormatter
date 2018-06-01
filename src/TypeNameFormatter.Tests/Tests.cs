@@ -180,6 +180,7 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("bool", typeof(bool))]
         [InlineData("byte", typeof(byte))]
         [InlineData("char", typeof(char))]
         [InlineData("decimal", typeof(decimal))]
@@ -201,6 +202,7 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("bool", typeof(bool))]
         [InlineData("byte", typeof(byte))]
         [InlineData("char", typeof(char))]
         [InlineData("decimal", typeof(decimal))]
@@ -223,6 +225,7 @@ namespace TypeNameFormatter
 
 
         [Theory]
+        [InlineData("System.Boolean", typeof(bool))]
         [InlineData("System.Byte", typeof(byte))]
         [InlineData("System.Char", typeof(char))]
         [InlineData("System.Decimal", typeof(decimal))]
