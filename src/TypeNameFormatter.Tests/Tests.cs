@@ -342,5 +342,17 @@ namespace TypeNameFormatter
         {
             Assert.Equal(expectedFormattedName, type.GetFormattedName(options));
         }
+
+        [Theory]
+        [InlineData("(bool, int)", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.Default)]
+        [InlineData("ValueTuple<bool, int>", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.NoTuple)]
+        [InlineData("(A, N.S?)", typeof(System.ValueTuple<global::A, global::N.S?>), TypeNameFormatOptions.Namespaces)]
+        [InlineData("(A, Nullable<S>)", typeof(System.ValueTuple<global::A, global::N.S?>), TypeNameFormatOptions.NoNullableQuestionMark)]
+        [InlineData("(bool, int)?", typeof((bool, int)?), TypeNameFormatOptions.Default)]
+        [InlineData("A<(bool, int)?[]>", typeof(global::A<(bool, int)?[]>), TypeNameFormatOptions.Default)]
+        public void Value_tuple(string expectedFormattedName, Type type, TypeNameFormatOptions options)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(options));
+        }
     }
 }
