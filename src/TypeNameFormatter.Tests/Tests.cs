@@ -4,6 +4,7 @@
 namespace TypeNameFormatter
 {
     using System;
+    using System.Collections.Generic;
 
     using Xunit;
 
@@ -356,6 +357,30 @@ namespace TypeNameFormatter
         public void Value_tuple(string expectedFormattedName, Type type, TypeNameFormatOptions options)
         {
             Assert.Equal(expectedFormattedName, type.GetFormattedName(options));
+        }
+
+        [Theory]
+        [MemberData(nameof(GenericTypeParameterInConstructedTypeData))]
+        public void Generic_type_parameter_acting_as_argument_in_constructed_type(string expectedFormattedName, Type type, TypeNameFormatOptions options)
+        {
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(options));
+        }
+
+        public static IEnumerable<object[]> GenericTypeParameterInConstructedTypeData
+        {
+            get
+            {
+                yield return new object[] { "T[]", typeof(global::A<>).GetField(nameof(global::A<object>.Array)).FieldType, TypeNameFormatOptions.Default };
+                yield return new object[] { "(T, T)", typeof(global::A<>).GetField(nameof(global::A<object>.Tuple)).FieldType, TypeNameFormatOptions.Default };
+
+                yield return new object[] { "A<>", typeof(global::A<>).GetField(nameof(global::A<object>.Self)).FieldType, TypeNameFormatOptions.Default };
+                // ^ NOTE: Ideally, this would also be rendered as `A<T>` but due to a limitation in Reflection,
+                //   this doesn't appear to be possible. See explanation over at the definition of `A<>.Self`.
+
+                yield return new object[] { "A<T>", typeof(global::A<>).GetField(nameof(global::A<object>.Self)).FieldType, TypeNameFormatOptions.GenericParameterNames };
+                yield return new object[] { "A<T>.B<T>", typeof(global::A<>).GetField(nameof(global::A<object>.OtherGeneric)).FieldType, TypeNameFormatOptions.Default };
+                yield return new object[] { "A<T>.B<T>", typeof(global::A<>).GetField(nameof(global::A<object>.OtherGeneric)).FieldType, TypeNameFormatOptions.GenericParameterNames };
+            }
         }
     }
 }
