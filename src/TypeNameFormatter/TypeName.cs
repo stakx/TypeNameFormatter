@@ -162,6 +162,31 @@ namespace TypeNameFormatter
                 }
             }
 
+            var name = type.Name;
+
+            if (IsSet(TypeNameFormatOptions.NoAnonymousTypes, options) == false && name.StartsWith("<>f", StringComparison.Ordinal))
+            {
+                stringBuilder.Append('{');
+
+                int i = 0;
+                foreach (var property in GetDeclaredProperties(type))
+                {
+                    if (i > 0)
+                    {
+                        stringBuilder.Append(", ");
+                    }
+
+                    stringBuilder.AppendFormattedName(property.PropertyType)
+                                 .Append(' ')
+                                 .Append(property.Name);
+
+                    ++i;
+                }
+
+                stringBuilder.Append('}');
+                return;
+            }
+
             // PHASE 2: Format a (non-"composite") type's name.
 
             // Possible prefix (namespace or name of enclosing type):
@@ -184,7 +209,6 @@ namespace TypeNameFormatter
             }
 
             // Actual type name, optionally followed by a generic parameter/argument list:
-            var name = type.Name;
             if (isConstructedGenericType || IsGenericType(type))
             {
                 var backtickIndex = name.LastIndexOf('`');
@@ -248,6 +272,18 @@ namespace TypeNameFormatter
         private static bool IsSet(TypeNameFormatOptions option, TypeNameFormatOptions options)
         {
             return (options & option) == option;
+        }
+
+        /// <remarks>
+        ///   Allows uniform reflection across all target frameworks.
+        /// </remarks>
+        private static IEnumerable<PropertyInfo> GetDeclaredProperties(Type type)
+        {
+#if TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION
+            return type.GetTypeInfo().DeclaredProperties;
+#else
+            return type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+#endif
         }
 
         /// <remarks>

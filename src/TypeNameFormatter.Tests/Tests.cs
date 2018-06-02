@@ -382,5 +382,24 @@ namespace TypeNameFormatter
                 yield return new object[] { "A<T>.B<T>", typeof(global::A<>).GetField(nameof(global::A<object>.OtherGeneric)).FieldType, TypeNameFormatOptions.GenericParameterNames };
             }
         }
+
+        [Theory]
+        [MemberData(nameof(AnonymouslyTypedObjectsData))]
+        public void Anonymous_type(string expectedFormattedName, object anonymouslyTypedObj, TypeNameFormatOptions options)
+        {
+            Assert.Equal(expectedFormattedName, anonymouslyTypedObj.GetType().GetFormattedName(options));
+        }
+
+        public static IEnumerable<object[]> AnonymouslyTypedObjectsData
+        {
+            get
+            {
+                yield return new object[] { "{}", new { }, TypeNameFormatOptions.Default };
+                yield return new object[] { "<>f__AnonymousType0", new { }, TypeNameFormatOptions.NoAnonymousTypes };
+                yield return new object[] { "{int Age}", new { Age = 17 }, TypeNameFormatOptions.Default };
+                yield return new object[] { "{int Age, string Name}", new { Age = 17, Name = "Fred" }, TypeNameFormatOptions.Default };
+                yield return new object[] { "{int Age, string Name, {bool? IsEarthling} Other}", new { Age = 17, Name = "Fred", Other = new { IsEarthling = (bool?)false } }, TypeNameFormatOptions.Default };
+            }
+        }
     }
 }

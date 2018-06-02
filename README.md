@@ -48,6 +48,9 @@ Both methods allow you to specify any combination of the following `TypeNameForm
 * **`Namespaces`**:  
   Namespaces should be included. (For example, `System.Action` instead of `Action`.)
 
+* **`NoAnonymousTypes`**:
+  Anonymous types should not have their "display class" name transformed to a more legible syntax. (For example, `<>f__AnonymousType5<string, int>` instead of `{string Name, int Count}`.)
+
 * **`NoKeywords`**:  
   Primitive types should not be mapped to their corresponding C# language keywords. (For example, `Int32` instead of `int`.)
 

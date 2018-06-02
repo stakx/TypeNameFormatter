@@ -66,5 +66,15 @@ namespace TypeNameFormatter
         ///   </example>
         /// </summary>
         NoTuple = 16,
+
+        /// <summary>
+        ///   Specifies that anonymous types should not be transformed to C#-like syntax.
+        ///   <example>
+        ///   For example, the anonymous type of <c>"new { Name = "Blob", Count = 17 }"</c> is formatted as
+        ///   <c>"{string Name, int Count}"</c> by default. When this flag is specified, it will be formatted as
+        ///   the raw "display class" name, which looks something like <c>"&lt;&gt;f__AnonymousType5&lt;string, int&gt;"</c>.
+        ///   </example>
+        /// </summary>
+        NoAnonymousTypes = 32,
     }
 }
