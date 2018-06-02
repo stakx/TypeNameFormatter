@@ -21,6 +21,21 @@ internal class A
 
 internal class A<T>
 {
+    public T[] Array = null;
+
+    public (T, T) Tuple = (default(T), default(T));
+
+    /// <remarks>
+    ///   Note that there is a small difference between the declaring type `A<T>` and the return type `A<T>`:
+    ///   The declaring type `A<T>` is a generic type definition, while the return type `A<T>` is a generic
+    ///   type definition instantiated over its own generic argument. That is, in the return type, the type's
+    ///   generic type *parameter* acts as an *argument*. Reflection does not distinguish between these two
+    ///   concepts, and that will show in the unit test case targeting this field.
+    /// </remarks>
+    public A<T> Self = null;
+
+    public B<T> OtherGeneric = null;
+
     internal class B
     {
         internal class C
