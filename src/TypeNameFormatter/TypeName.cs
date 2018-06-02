@@ -53,7 +53,7 @@ namespace TypeNameFormatter
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public static StringBuilder AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options = TypeNameFormatOptions.Default)
         {
-            stringBuilder.AppendFormattedName(type, options, IsGenericType(type) ? GetGenericTypeArguments(type) : null);
+            stringBuilder.AppendFormattedName(type, options, type);
             return stringBuilder;
         }
 
@@ -70,14 +70,19 @@ namespace TypeNameFormatter
             return stringBuilder.ToString();
         }
 
-        private static void AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type[] genericTypeArgs)
+        private static void AppendFormattedName(this StringBuilder stringBuilder, Type type, TypeNameFormatOptions options, Type typeWithGenericTypeArgs)
         {
+            // PHASE 1: Rule out several special cases. (These are mostly "composite" types requiring some recursion.)
+
+            // Types for which there is a keyword:
             if (IsSet(TypeNameFormatOptions.NoKeywords, options) == false && typeKeywords.TryGetValue(type, out string typeKeyword))
             {
                 stringBuilder.Append(typeKeyword);
                 return;
             }
-            else if (type.HasElementType)
+
+            // Arrays, by-ref, and pointer types:
+            if (type.HasElementType)
             {
                 var elementType = type.GetElementType();
 
@@ -124,24 +129,23 @@ namespace TypeNameFormatter
                 return;
             }
 
+            var isConstructedGenericType = IsConstructedGenericType(typeWithGenericTypeArgs);
 
-            if (type.IsGenericParameter == false)
+            if (isConstructedGenericType)
             {
-                var isConstructedGenericType = IsConstructedGenericType(type);
-
-                if (type.IsNested)
+                // Nullable value types (excluding the open generic Nullable<T> itself):
+                if (IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
-                    stringBuilder.AppendFormattedName(type.DeclaringType, options, genericTypeArgs);
-                    stringBuilder.Append('.');
-                }
-                else if (isConstructedGenericType && IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                {
-                    stringBuilder.AppendFormattedName(genericTypeArgs[0], options);
+                    stringBuilder.AppendFormattedName(GetGenericTypeArguments(typeWithGenericTypeArgs)[0], options);
                     stringBuilder.Append('?');
                     return;
                 }
-                else if (isConstructedGenericType && IsSet(TypeNameFormatOptions.NoTuple, options) == false && type.Name.StartsWith("ValueTuple`", StringComparison.Ordinal) && type.Namespace == "System")
+
+                // Value tuple types (any type called System.ValueTuple`n):
+                if (IsSet(TypeNameFormatOptions.NoTuple, options) == false && type.Name.StartsWith("ValueTuple`", StringComparison.Ordinal) && type.Namespace == "System")
                 {
+                    var genericTypeArgs = GetGenericTypeArguments(typeWithGenericTypeArgs);
+
                     stringBuilder.Append('(');
                     for (int i = 0, n = genericTypeArgs.Length; i < n; ++i)
                     {
@@ -156,6 +160,18 @@ namespace TypeNameFormatter
                     stringBuilder.Append(')');
                     return;
                 }
+            }
+
+            // PHASE 2: Format a (non-"composite") type's name.
+
+            // Possible prefix (namespace or name of enclosing type):
+            if (!type.IsGenericParameter)
+            {
+                if (type.IsNested)
+                {
+                    stringBuilder.AppendFormattedName(type.DeclaringType, options, typeWithGenericTypeArgs);
+                    stringBuilder.Append('.');
+                }
                 else if (IsSet(TypeNameFormatOptions.Namespaces, options))
                 {
                     string @namespace = type.Namespace;
@@ -166,13 +182,10 @@ namespace TypeNameFormatter
                     }
                 }
             }
-            else if (IsSet(TypeNameFormatOptions.GenericParameterNames, options) == false)
-            {
-                return;
-            }
 
+            // Actual type name, optionally followed by a generic parameter/argument list:
             var name = type.Name;
-            if (genericTypeArgs != null)
+            if (isConstructedGenericType || IsGenericType(type))
             {
                 var backtickIndex = name.LastIndexOf('`');
                 if (backtickIndex >= 0)
@@ -200,21 +213,23 @@ namespace TypeNameFormatter
                 {
                     stringBuilder.Append('<');
 
-                    for (int i = ownGenericTypeArgStartIndex, n = ownGenericTypeParamCount; i < n; ++i)
+                    if (isConstructedGenericType || IsSet(TypeNameFormatOptions.GenericParameterNames, options))
                     {
-                        if (i > ownGenericTypeArgStartIndex)
+                        var genericTypeArgs = GetGenericTypeArguments(typeWithGenericTypeArgs);
+
+                        for (int i = ownGenericTypeArgStartIndex, n = ownGenericTypeParamCount; i < n; ++i)
                         {
-                            if (IsSet(TypeNameFormatOptions.GenericParameterNames, options) || genericTypeArgs[i].IsGenericParameter == false)
+                            if (i > ownGenericTypeArgStartIndex)
                             {
                                 stringBuilder.Append(", ");
                             }
-                            else
-                            {
-                                stringBuilder.Append(',');
-                            }
-                        }
 
-                        stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
+                            stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
+                        }
+                    }
+                    else
+                    {
+                        stringBuilder.Append(',', ownGenericTypeParamCount - ownGenericTypeArgStartIndex - 1);
                     }
 
                     stringBuilder.Append('>');
