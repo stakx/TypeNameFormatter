@@ -176,7 +176,7 @@ namespace TypeNameFormatter
                         stringBuilder.Append(", ");
                     }
 
-                    stringBuilder.AppendFormattedName(property.PropertyType)
+                    stringBuilder.AppendFormattedName(property.PropertyType, options)
                                  .Append(' ')
                                  .Append(property.Name);
 
