@@ -399,6 +399,7 @@ namespace TypeNameFormatter
                 yield return new object[] { "{int Age}", new { Age = 17 }, TypeNameFormatOptions.Default };
                 yield return new object[] { "{int Age, string Name}", new { Age = 17, Name = "Fred" }, TypeNameFormatOptions.Default };
                 yield return new object[] { "{int Age, string Name, {bool? IsEarthling} Other}", new { Age = 17, Name = "Fred", Other = new { IsEarthling = (bool?)false } }, TypeNameFormatOptions.Default };
+                yield return new object[] { "{Int32 Age, Nullable<Boolean> IsEarthling}", new { Age = 17, IsEarthling = (bool?)false }, TypeNameFormatOptions.NoKeywords | TypeNameFormatOptions.NoNullableQuestionMark };
             }
         }
     }
