@@ -237,7 +237,7 @@ namespace TypeNameFormatter
                 {
                     stringBuilder.Append('<');
 
-                    if (isConstructedGenericType || IsSet(TypeNameFormatOptions.GenericParameterNames, options))
+                    if (isConstructedGenericType || IsSet(TypeNameFormatOptions.NoGenericParameterNames, options) == false)
                     {
                         var genericTypeArgs = GetGenericTypeArguments(typeWithGenericTypeArgs);
 

@@ -42,14 +42,14 @@ By importing the `TypeNameFormatter` namespace, the following extension methods 
 
 Both methods allow you to specify any combination of the following `TypeNameFormatOptions` flags:
 
-* **`GenericParameterNames`**:  
-  Parameter names of an open generic type should be included. (For example, `IEnumerable<T>` instead of `IEnumerable<>`. Note that this setting does not affect closed generic types; their arguments are always included.)
-
 * **`Namespaces`**:  
   Namespaces should be included. (For example, `System.Action` instead of `Action`.)
 
 * **`NoAnonymousTypes`**:
   Anonymous types should not have their "display class" name transformed to a more legible syntax. (For example, `<>f__AnonymousType5<string, int>` instead of `{string Name, int Count}`.)
+
+* **`NoGenericParameterNames`**:  
+  Parameter names of an open generic type should be omitted. (For example, `IEnumerable<>` instead of `IEnumerable<T>`. Note that this setting does not affect closed generic types; their arguments are always included.)
 
 * **`NoKeywords`**:  
   Primitive types should not be mapped to their corresponding C# language keywords. (For example, `Int32` instead of `int`.)

@@ -22,13 +22,13 @@ namespace TypeNameFormatter
         Default = 0,
 
         /// <summary>
-        ///   Specifies that a open generic type's parameter names should be included.
+        ///   Specifies that an open generic type's parameter names should be omitted.
         ///   <example>
-        ///     For example, the open generic type <see cref="IEquatable{T}"/> is formatted as <c>"IEquatable&lt;&gt;"</c> by default.
-        ///     When this flag is specified, it will be formatted as <c>"IEquatable&lt;T&gt;"</c>.
+        ///     For example, the open generic type <see cref="IEquatable{T}"/> is formatted as <c>"IEquatable&lt;T&gt;"</c> by default.
+        ///     When this flag is specified, it will be formatted as <c>"IEquatable&lt;&gt;"</c>.
         ///   </example>
         /// </summary>
-        GenericParameterNames = 1,
+        NoGenericParameterNames = 1,
 
         /// <summary>
         ///   Specifies that a type's namespace should be included.
