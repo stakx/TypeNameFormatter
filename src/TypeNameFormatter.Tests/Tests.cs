@@ -60,9 +60,9 @@ namespace TypeNameFormatter
         [InlineData("A<,>", typeof(global::A<,>))]
         [InlineData("A<,>", typeof(global::N.A<,>))]
         [InlineData("A<,>", typeof(global::N.O.A<,>))]
-        public void Generic_type_Name(string expectedFormattedName, Type type)
+        public void Generic_type_without_parameter_names_Name(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedName());
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.NoGenericParameterNames));
         }
 
         [Theory]
@@ -72,9 +72,9 @@ namespace TypeNameFormatter
         [InlineData("A<T, U>", typeof(global::A<,>))]
         [InlineData("A<T, U>", typeof(global::N.A<,>))]
         [InlineData("A<T, U>", typeof(global::N.O.A<,>))]
-        public void Generic_type_with_parameter_names_Name(string expectedFormattedName, Type type)
+        public void Generic_type_Name(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.GenericParameterNames));
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Default));
         }
 
         [Theory]
@@ -86,7 +86,7 @@ namespace TypeNameFormatter
         [InlineData("N.O.A<T, U>", typeof(global::N.O.A<,>))]
         public void Generic_type_with_parameter_names_FullName(string expectedFormattedName, Type type)
         {
-            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.GenericParameterNames));
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -165,19 +165,19 @@ namespace TypeNameFormatter
         [InlineData("A<T, U>.B<V, W>.C<X, Y>", typeof(global::A<,>.B<,>.C<,>))]
         public void Nested_generic_type(string expectedName, Type type)
         {
-            Assert.Equal(expectedName, type.GetFormattedName(TypeNameFormatOptions.GenericParameterNames));
+            Assert.Equal(expectedName, type.GetFormattedName(TypeNameFormatOptions.Default));
         }
 
         [Fact]
         public void Nested_generic_type_instantiation_FullName()
         {
-            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.GenericParameterNames));
+            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Fact]
         public void Nested_recursive_generic_type_instantiation_FullName()
         {
-            Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces | TypeNameFormatOptions.GenericParameterNames));
+            Assert.Equal("A<A>.B<N.A<N.O.A<A>>, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A<global::N.O.A<global::A>>, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
         }
 
         [Theory]
@@ -329,7 +329,8 @@ namespace TypeNameFormatter
         }
 
         [Theory]
-        [InlineData("Nullable<>", typeof(global::System.Nullable<>), TypeNameFormatOptions.Default)]
+        [InlineData("Nullable<T>", typeof(global::System.Nullable<>), TypeNameFormatOptions.Default)]
+        [InlineData("Nullable<>", typeof(global::System.Nullable<>), TypeNameFormatOptions.NoGenericParameterNames)]
         [InlineData("int?", typeof(int?), TypeNameFormatOptions.Default)]
         [InlineData("Int32?", typeof(int?), TypeNameFormatOptions.NoKeywords)]
         [InlineData("Nullable<int>", typeof(int?), TypeNameFormatOptions.NoNullableQuestionMark)]
@@ -346,8 +347,8 @@ namespace TypeNameFormatter
         }
 
         [Theory]
-        [InlineData("ValueTuple<,>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.Default)]
-        [InlineData("ValueTuple<T1, T2>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.GenericParameterNames)]
+        [InlineData("ValueTuple<T1, T2>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.Default)]
+        [InlineData("ValueTuple<,>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.NoGenericParameterNames)]
         [InlineData("(bool, int)", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.Default)]
         [InlineData("ValueTuple<bool, int>", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.NoTuple)]
         [InlineData("(A, N.S?)", typeof(System.ValueTuple<global::A, global::N.S?>), TypeNameFormatOptions.Namespaces)]
@@ -373,13 +374,12 @@ namespace TypeNameFormatter
                 yield return new object[] { "T[]", typeof(global::A<>).GetField(nameof(global::A<object>.Array)).FieldType, TypeNameFormatOptions.Default };
                 yield return new object[] { "(T, T)", typeof(global::A<>).GetField(nameof(global::A<object>.Tuple)).FieldType, TypeNameFormatOptions.Default };
 
-                yield return new object[] { "A<>", typeof(global::A<>).GetField(nameof(global::A<object>.Self)).FieldType, TypeNameFormatOptions.Default };
+                yield return new object[] { "A<>", typeof(global::A<>).GetField(nameof(global::A<object>.Self)).FieldType, TypeNameFormatOptions.NoGenericParameterNames };
                 // ^ NOTE: Ideally, this would also be rendered as `A<T>` but due to a limitation in Reflection,
                 //   this doesn't appear to be possible. See explanation over at the definition of `A<>.Self`.
 
-                yield return new object[] { "A<T>", typeof(global::A<>).GetField(nameof(global::A<object>.Self)).FieldType, TypeNameFormatOptions.GenericParameterNames };
+                yield return new object[] { "A<T>", typeof(global::A<>).GetField(nameof(global::A<object>.Self)).FieldType, TypeNameFormatOptions.Default };
                 yield return new object[] { "A<T>.B<T>", typeof(global::A<>).GetField(nameof(global::A<object>.OtherGeneric)).FieldType, TypeNameFormatOptions.Default };
-                yield return new object[] { "A<T>.B<T>", typeof(global::A<>).GetField(nameof(global::A<object>.OtherGeneric)).FieldType, TypeNameFormatOptions.GenericParameterNames };
             }
         }
 
