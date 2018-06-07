@@ -136,11 +136,15 @@ namespace TypeNameFormatter
             if (isConstructedGenericType)
             {
                 // Nullable value types (excluding the open generic Nullable<T> itself):
-                if (IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                if (IsSet(TypeNameFormatOptions.NoNullableQuestionMark, options) == false)
                 {
-                    stringBuilder.AppendFormattedName(GetGenericTypeArguments(typeWithGenericTypeArgs)[0], options);
-                    stringBuilder.Append('?');
-                    return;
+                    var nullableArg = Nullable.GetUnderlyingType(type);
+                    if (nullableArg != null)
+                    {
+                        stringBuilder.AppendFormattedName(nullableArg, options);
+                        stringBuilder.Append('?');
+                        return;
+                    }
                 }
 
                 // Value tuple types (any type called System.ValueTuple`n):
