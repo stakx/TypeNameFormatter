@@ -13,7 +13,7 @@
     <SourceFolder>$(MSBuildThisFileDirectory)</SourceFolder>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(IsCompatibleWithProject)">
+  <PropertyGroup Condition="'$(IsCompatibleWithProject)' == 'True'">
     <DefineConstants Condition="$(TypeNameFormatterInternal)">TYPENAMEFORMATTER_INTERNAL;$(DefineConstants)</DefineConstants>
     <DefineConstants Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), `^net(coreapp|standard)1`))">TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
@@ -25,7 +25,7 @@
        per targeted framework. Having the file just once is sufficient.
        Executing after 'PrepareForBuild' means that the intermediate output directory should've been created. -->
   <Target Name="_TypeNameFormatterCopy"
-          Condition="$(IsCompatibleWithProject)"
+          Condition="'$(IsCompatibleWithProject)' == 'True'"
           AfterTargets="PrepareForBuild"
           BeforeTargets="CoreCompile"
           Inputs="$(SourceFolder)TypeNameFormatter.cs"
@@ -37,7 +37,7 @@
        by putting the item group inside a target which CoreCompile is made to depend on; however, that solution does not
        work well e.g. in Rider, whose IDE code analysis and completion features only discover files that are included
        outside of any target. -->
-  <ItemGroup Condition="$(IsCompatibleWithProject)">
+  <ItemGroup Condition="'$(IsCompatibleWithProject)' == 'True'">
     <Compile Include="$(BaseIntermediateOutputPath)TypeNameFormatter.cs">
       <AutoGen>true</AutoGen>
       <Link Condition="'$(TypeNameFormatterProjectNodeName)' != ''">$(TypeNameFormatterProjectNodeName)</Link>
