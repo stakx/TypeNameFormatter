@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project InitialTargets="_TypeNameFormatterCopy" TreatAsLocalProperty="IsCompatibleWithProject;SourceFolder">
+<Project TreatAsLocalProperty="IsCompatibleWithProject;SourceFolder">
 
   <!-- Public properties -->
   <PropertyGroup>
