@@ -1,32 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project>
+<Project InitialTargets="_TypeNameFormatterCopy" TreatAsLocalProperty="IsCompatibleWithProject;SourceFolder">
 
+  <!-- Public properties -->
   <PropertyGroup>
-    <_TypeNameFormatterCompatibleWithProject Condition="'$(Language)' == 'C#'">True</_TypeNameFormatterCompatibleWithProject>
     <TypeNameFormatterInternal Condition="'$(TypeNameFormatterInternal)' == ''">True</TypeNameFormatterInternal>
+    <TypeNameFormatterProjectNodeName Condition="'$(TypeNameFormatterProjectNodeName)' == ''">TypeNameFormatter.cs</TypeNameFormatterProjectNodeName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'">
-    <DefineConstants Condition="'$(TypeNameFormatterInternal)' == 'True'">TYPENAMEFORMATTER_INTERNAL;$(DefineConstants)</DefineConstants>
+  <!-- Private properties -->
+  <PropertyGroup>
+    <IsCompatibleWithProject Condition="'$(Language)' == 'C#'">True</IsCompatibleWithProject>
+    <SourceFolder>$(MSBuildThisFileDirectory)</SourceFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsCompatibleWithProject)' == 'True'">
+    <DefineConstants Condition="$(TypeNameFormatterInternal)">TYPENAMEFORMATTER_INTERNAL;$(DefineConstants)</DefineConstants>
     <DefineConstants Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), `^net(coreapp|standard)1`))">TYPENAMEFORMATTER_USE_SEMIBROKEN_REFLECTION;$(DefineConstants)</DefineConstants>
-    <CoreCompileDependsOn>_CompileTypeNameFormatter;$(CoreCompileDependsOn)</CoreCompileDependsOn>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'">
-    <_TypeNameFormatterInputs Include="$(MSBuildThisFileDirectory)TypeName.cs"/>
-    <_TypeNameFormatterInputs Include="$(MSBuildThisFileDirectory)TypeNameFormatOptions.cs"/>
-    <_TypeNameFormatterOutputs Include="@(_TypeNameFormatterInputs -> '$(IntermediateOutputPath)%(Filename).g.cs')"/>
+  <!-- The source files are copied from the user's NuGet package cache over to the project's intermediate output directory.
+       This protects the original files against accidental changes that would affect all referencing projects,
+       while at the same time still keeping it out of source control's sight.
+       We pick 'BaseIntermediateOutputPath' instead of 'IntermediateOutputPath' because we don't need the file once
+       per targeted framework. Having the file just once is sufficient.
+       Executing after 'PrepareForBuild' means that the intermediate output directory should've been created. -->
+  <Target Name="_TypeNameFormatterCopy"
+          Condition="'$(IsCompatibleWithProject)' == 'True'"
+          AfterTargets="PrepareForBuild"
+          BeforeTargets="CoreCompile"
+          Inputs="$(SourceFolder)TypeNameFormatter.cs"
+          Outputs="$(BaseIntermediateOutputPath)TypeNameFormatter.cs">
+    <Copy SourceFiles="$(SourceFolder)TypeNameFormatter.cs" DestinationFolder="$(BaseIntermediateOutputPath)" OverwriteReadOnlyFiles="true" />
+  </Target>
+
+  <!-- It would be nice to completely hide TypeNameFormatter files from the solution explorer. This could be done
+       by putting the item group inside a target which CoreCompile is made to depend on; however, that solution does not
+       work well e.g. in Rider, whose IDE code analysis and completion features only discover files that are included
+       outside of any target. -->
+  <ItemGroup Condition="'$(IsCompatibleWithProject)' == 'True'">
+    <Compile Include="$(BaseIntermediateOutputPath)TypeNameFormatter.cs">
+      <AutoGen>true</AutoGen>
+      <Link Condition="'$(TypeNameFormatterProjectNodeName)' != ''">$(TypeNameFormatterProjectNodeName)</Link>
+      <Visible Condition="'$(TypeNameFormatterProjectNodeName)' == 'TypeNameFormatter.cs'">false</Visible>
+    </Compile>
   </ItemGroup>
-
-  <Target Name="_CopyTypeNameFormatter" Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'" Inputs="@(_TypeNameFormatterInputs)" Outputs="@(_TypeNameFormatterOutputs)">
-    <MakeDir Condition="!Exists('$(IntermediateOutputPath)')" Directories="$(IntermediateOutputPath)"/>
-    <Copy SourceFiles="@(_TypeNameFormatterInputs)" DestinationFiles="@(_TypeNameFormatterOutputs)"/>
-  </Target>
-
-  <Target Name="_CompileTypeNameFormatter" Condition="'$(_TypeNameFormatterCompatibleWithProject)' == 'True'" DependsOnTargets="_CopyTypeNameFormatter">
-    <ItemGroup>
-      <Compile Include="@(_TypeNameFormatterOutputs)"/>
-    </ItemGroup>
-  </Target>
 
 </Project>
