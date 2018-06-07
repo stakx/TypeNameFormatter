@@ -21,14 +21,16 @@
   <!-- The source files are copied from the user's NuGet package cache over to the project's intermediate output directory.
        This protects the original files against accidental changes that would affect all referencing projects,
        while at the same time still keeping it out of source control's sight.
+       We pick 'BaseIntermediateOutputPath' instead of 'IntermediateOutputPath' because we don't need the file once
+       per targeted framework. Having the file just once is sufficient.
        Executing after 'PrepareForBuild' means that the intermediate output directory should've been created. -->
   <Target Name="_TypeNameFormatterCopy"
           Condition="$(IsCompatibleWithProject)"
           AfterTargets="PrepareForBuild"
           BeforeTargets="CoreCompile"
           Inputs="$(SourceFolder)TypeNameFormatter.cs"
-          Outputs="$(IntermediateOutputPath)TypeNameFormatter.cs">
-    <Copy SourceFiles="$(SourceFolder)TypeNameFormatter.cs" DestinationFolder="$(IntermediateOutputPath)" OverwriteReadOnlyFiles="true" />
+          Outputs="$(BaseIntermediateOutputPath)TypeNameFormatter.cs">
+    <Copy SourceFiles="$(SourceFolder)TypeNameFormatter.cs" DestinationFolder="$(BaseIntermediateOutputPath)" OverwriteReadOnlyFiles="true" />
   </Target>
 
   <!-- It would be nice to completely hide TypeNameFormatter files from the solution explorer. This could be done
@@ -36,7 +38,7 @@
        work well e.g. in Rider, whose IDE code analysis and completion features only discover files that are included
        outside of any target. -->
   <ItemGroup Condition="$(IsCompatibleWithProject)">
-    <Compile Include="$(IntermediateOutputPath)TypeNameFormatter.cs">
+    <Compile Include="$(BaseIntermediateOutputPath)TypeNameFormatter.cs">
       <AutoGen>true</AutoGen>
       <Link Condition="'$(TypeNameFormatterProjectNodeName)' != ''">$(TypeNameFormatterProjectNodeName)</Link>
       <Visible Condition="'$(TypeNameFormatterProjectNodeName)' == 'TypeNameFormatter.cs'">false</Visible>
