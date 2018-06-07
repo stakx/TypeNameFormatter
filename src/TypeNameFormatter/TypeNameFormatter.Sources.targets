@@ -4,7 +4,7 @@
   <!-- Public properties -->
   <PropertyGroup>
     <TypeNameFormatterInternal Condition="'$(TypeNameFormatterInternal)' == ''">True</TypeNameFormatterInternal>
-    <TypeNameFormatterProjectFolder Condition="'$(TypeNameFormatterProjectFolder)' == ''">TypeNameFormatter\</TypeNameFormatterProjectFolder>
+    <TypeNameFormatterProjectNodeName Condition="'$(TypeNameFormatterProjectNodeName)' == ''">TypeNameFormatter.cs</TypeNameFormatterProjectNodeName>
   </PropertyGroup>
 
   <!-- Private properties -->
@@ -26,9 +26,9 @@
           Condition="$(IsCompatibleWithProject)"
           AfterTargets="PrepareForBuild"
           BeforeTargets="CoreCompile"
-          Inputs="$(SourceFolder)TypeName.cs;$(SourceFolder)TypeNameFormatOptions.cs"
-          Outputs="$(IntermediateOutputPath)TypeName.cs;$(IntermediateOutputPath)TypeNameFormatOptions.cs">
-    <Copy SourceFiles="$(SourceFolder)TypeName.cs;$(SourceFolder)TypeNameFormatOptions.cs" DestinationFolder="$(IntermediateOutputPath)" OverwriteReadOnlyFiles="true" />
+          Inputs="$(SourceFolder)TypeNameFormatter.cs"
+          Outputs="$(IntermediateOutputPath)TypeNameFormatter.cs">
+    <Copy SourceFiles="$(SourceFolder)TypeNameFormatter.cs" DestinationFolder="$(IntermediateOutputPath)" OverwriteReadOnlyFiles="true" />
   </Target>
 
   <!-- It would be nice to completely hide TypeNameFormatter files from the solution explorer. This could be done
@@ -36,15 +36,10 @@
        work well e.g. in Rider, whose IDE code analysis and completion features only discover files that are included
        outside of any target. -->
   <ItemGroup Condition="$(IsCompatibleWithProject)">
-    <Compile Include="$(IntermediateOutputPath)TypeName.cs">
+    <Compile Include="$(IntermediateOutputPath)TypeNameFormatter.cs">
       <AutoGen>true</AutoGen>
-      <Link>$(TypeNameFormatterProjectFolder)TypeName.cs</Link>
-      <Visible>false</Visible>
-    </Compile>
-    <Compile Include="$(IntermediateOutputPath)TypeNameFormatOptions.cs">
-      <AutoGen>true</AutoGen>
-      <Link>$(TypeNameFormatterProjectFolder)TypeNameFormatOptions.cs</Link>
-      <Visible>false</Visible>
+      <Link Condition="'$(TypeNameFormatterProjectNodeName)' != ''">$(TypeNameFormatterProjectNodeName)</Link>
+      <Visible Condition="'$(TypeNameFormatterProjectNodeName)' == 'TypeNameFormatter.cs'">false</Visible>
     </Compile>
   </ItemGroup>
 
