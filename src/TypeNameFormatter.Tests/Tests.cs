@@ -168,10 +168,12 @@ namespace TypeNameFormatter
             Assert.Equal(expectedName, type.GetFormattedName(TypeNameFormatOptions.Default));
         }
 
-        [Fact]
-        public void Nested_generic_type_instantiation_FullName()
+        [Theory]
+        [InlineData("A.B<int>", typeof(global::A.B<int>), TypeNameFormatOptions.Default)]
+        [InlineData("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>), TypeNameFormatOptions.Namespaces)]
+        public void Nested_generic_type_instantiation(string expectedFormattedName, Type type, TypeNameFormatOptions options)
         {
-            Assert.Equal("A<A>.B<N.A, N.O.A>.C<A>", typeof(global::A<global::A>.B<global::N.A, global::N.O.A>.C<global::A>).GetFormattedName(TypeNameFormatOptions.Namespaces));
+            Assert.Equal(expectedFormattedName, type.GetFormattedName(options));
         }
 
         [Fact]
