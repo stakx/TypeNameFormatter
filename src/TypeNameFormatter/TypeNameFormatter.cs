@@ -12,6 +12,11 @@ namespace TypeNameFormatter
     using System.Reflection;
     using System.Text;
 
+    /// <summary>
+    ///   Contains the two extension methods
+    ///   <see cref="AppendFormattedName(StringBuilder, Type, TypeNameFormatOptions)"/> and
+    ///   <see cref="GetFormattedName(Type, TypeNameFormatOptions)"/>.
+    /// </summary>
     [DebuggerStepThrough]
     [EditorBrowsable(EditorBrowsableState.Never)]
 #if TYPENAMEFORMATTER_INTERNAL
