@@ -68,7 +68,7 @@ If you think you've found a bug, please raise an [issue](https://github.com/stak
 
 ## Alternatives
 
-* If you're targeting the .NET Framework, you can use good old `System.CodeDom` (which isn't particularly fast, however):
+* If you're targeting the .NET Framework, you can use good old `Syst-em.CodeDom` (which isn't particularly fast, however):
 
    ```csharp
    using Microsoft.CSharp;
@@ -85,3 +85,36 @@ If you think you've found a bug, please raise an [issue](https://github.com/stak
    ```
 
 * You could perhaps use Microsoft's [.NET Compiler Platform (Roslyn)](https://www.nuget.org/packages/Microsoft.CodeAnalysis "'Microsoft.CodeAnalysis' package on NuGet"), but that is a large library that can do much more than is needed.
+
+## Advanced usage
+
+### Configuration knobs for the source code distribution
+
+The **TypeNameFormatter.Sources** NuGet package comes with a few MSBuild properties that you can set inside your project file (inside a `<PropertyGroup>`):
+
+* **`<TypeNameFormatterInternal>`**:  
+  This property determines the visibility of the types provided by TypeNameFormatter:
+    * If set to `True` (the default), they are declared `internal`.
+    * If set to `False`, they are declared `public`.
+
+* **`<TypeNameFormatterProjectNodeName>`**:  
+  This property determines the name under which TypeNameFormatter's single `.cs` file will appear in e.g. Visual Studio's Solution Explorer:
+    * If set to `TypeNameFormatter.cs` (the default), a hidden linked file by that name will be added to your project's root.
+    * If set to any other relative file path, a visible linked file will be added to your project.
+
+For example:
+
+```xml
+<Project …>
+  …
+  <PropertyGroup>
+    <!-- Make TypeNameFormatter's types `public` instead of `internal`: -->
+    <TypeNameFormatterInternal>False<TypeNameFormatterInternal>
+
+    <!-- Make a linked file `TypeNameFormatter.cs` show up in Solution Explorer
+         under a folder node named `Utilities`: -->
+    <TypeNameFormatterProjectNodeName>Utilities\TypeNameFormatter.cs</TypeNameFormatterProjectNodeName>
+  </PropertyGroup>
+  …
+</Project>
+```
