@@ -19,6 +19,7 @@ This package is a source code distribution of this library. It gets embedded int
     <copyright>Copyright (c) 2018 stakx</copyright>
     <licenseUrl>https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md</licenseUrl>
     <iconUrl>https://github.com/stakx/TypeNameFormatter/raw/master/assets/icon-64x64.png</iconUrl>
+    <releaseNotes>A changelog is available at https://github.com/stakx/TypeNameFormatter/blob/master/CHANGELOG.md.</releaseNotes>
     <developmentDependency>true</developmentDependency>
     <tags>reflection types formatting string c#</tags>
   </metadata>
