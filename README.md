@@ -68,7 +68,7 @@ If you think you've found a bug, please raise an [issue](https://github.com/stak
 
 ## Alternatives
 
-* If you're targeting the .NET Framework, you can use good old `Syst-em.CodeDom` (which isn't particularly fast, however):
+* If you're targeting the .NET Framework, you can use good old `System.CodeDom` (which isn't particularly fast, however):
 
    ```csharp
    using Microsoft.CSharp;
