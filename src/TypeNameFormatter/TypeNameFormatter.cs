@@ -17,7 +17,8 @@ namespace TypeNameFormatter
     ///   <see cref="AppendFormattedName(StringBuilder, Type, TypeNameFormatOptions)"/> and
     ///   <see cref="GetFormattedName(Type, TypeNameFormatOptions)"/>.
     /// </summary>
-    [DebuggerStepThrough]
+    [GeneratedCode("TypeNameFormatter", "1.0.0")]
+    [DebuggerNonUserCode]
     [EditorBrowsable(EditorBrowsableState.Never)]
 #if TYPENAMEFORMATTER_INTERNAL
     internal
