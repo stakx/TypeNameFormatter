@@ -9,6 +9,7 @@ namespace TypeNameFormatter
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Text;
 
@@ -19,6 +20,7 @@ namespace TypeNameFormatter
     /// </summary>
     [DebuggerStepThrough]
     [EditorBrowsable(EditorBrowsableState.Never)]
+    [ExcludeFromCodeCoverage]
 #if TYPENAMEFORMATTER_INTERNAL
     internal
 #else
