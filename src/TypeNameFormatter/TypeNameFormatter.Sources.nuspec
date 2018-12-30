@@ -4,7 +4,7 @@
   <metadata minClientVersion="2.8">
     <id>TypeNameFormatter.Sources</id>
     <title>TypeNameFormatter</title>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <summary>A small .NET library for formatting type names à la C#.</summary>
     <description>TypeNameFormatter provides some extension methods that can be used instead of Type.ToString() to format a type's name the way it would look in C#:
 

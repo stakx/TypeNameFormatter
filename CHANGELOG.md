@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 
+## 1.0.1 (2018-12-30)
+
+#### Changed
+
+* Exclude from code coverage for consuming projects. Note that this may also slightly alter the debugger's behavior (e.g. with breakpoints inside TypeNameFormatter, Step Into, Just My Code setting) (@kzu, #35)
+
+
 ## 1.0.0 (2018-07-11)
 
 Initial stable release. (Identical to 1.0.0-beta3 for all practical purposes.)
