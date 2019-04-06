@@ -1,4 +1,13 @@
 image: Visual Studio 2017
 
+environment:
+  CODECOV_TOKEN:
+    secure: gNgpNPwYjgBSs4Kn8F4CAUeF1YhdK00L6W2S7NTh5cYVjgNwLUU2GPUZwU4dhq65
+
 before_build:
 - msbuild /r ./src/TypeNameFormatter.sln
+- choco install codecov
+
+after_test:
+  - "%USERPROFILE%\\.nuget\\packages\\opencover\\4.7.922\\tools\\OpenCover.Console.exe -register:user -target:\"%USERPROFILE%\\.nuget\\packages\\xunit.runner.console\\2.4.1\\tools\\net472\\xunit.console.x86.exe\" -targetargs:\".\\src\\TypeNameFormatter.Tests\\bin\\Debug\\net47\\TypeNameFormatter.Tests.dll -noshadow\" -filter:\"+[TypeNameFormatter]* -[TypeNameFormatter.Tests]*\" -output:\".\\coverage.xml\""
+  - "codecov -f \"coverage.xml\""
