@@ -5,7 +5,7 @@ environment:
     secure: gNgpNPwYjgBSs4Kn8F4CAUeF1YhdK00L6W2S7NTh5cYVjgNwLUU2GPUZwU4dhq65
 
 before_build:
-- msbuild /r ./src/TypeNameFormatter.sln
+- msbuild /t:Restore ./src/TypeNameFormatter.sln
 - choco install codecov
 
 test_script:
