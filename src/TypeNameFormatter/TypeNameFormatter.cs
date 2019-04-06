@@ -125,14 +125,12 @@ namespace TypeNameFormatter
                     stringBuilder.Append("ref ");
                     stringBuilder.AppendFormattedName(elementType, options);
                 }
-                else if (type.IsPointer)
-                {
-                    stringBuilder.AppendFormattedName(elementType, options);
-                    stringBuilder.Append('*');
-                }
                 else
                 {
-                    Debug.Assert(false, "Only array, by-ref, and pointer types have an element type. This should be unreachable.");
+                    Debug.Assert(type.IsPointer, "Only array, by-ref, and pointer types have an element type.");
+
+                    stringBuilder.AppendFormattedName(elementType, options);
+                    stringBuilder.Append('*');
                 }
 
                 return;
