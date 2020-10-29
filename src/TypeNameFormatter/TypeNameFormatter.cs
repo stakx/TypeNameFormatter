@@ -2,6 +2,7 @@
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
 // ReSharper disable All
+#nullable disable
 
 namespace TypeNameFormatter
 {
