@@ -349,8 +349,11 @@ namespace TypeNameFormatter
         }
 
         [Theory]
+        [InlineData("ValueTuple", typeof(global::System.ValueTuple), TypeNameFormatOptions.Default)]
+        [InlineData("ValueTuple<T1>", typeof(global::System.ValueTuple<>), TypeNameFormatOptions.Default)]
         [InlineData("ValueTuple<T1, T2>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.Default)]
         [InlineData("ValueTuple<,>", typeof(global::System.ValueTuple<,>), TypeNameFormatOptions.NoGenericParameterNames)]
+        [InlineData("ValueTuple<bool>", typeof(global::System.ValueTuple<bool>), TypeNameFormatOptions.Default)]
         [InlineData("(bool, int)", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.Default)]
         [InlineData("ValueTuple<bool, int>", typeof(System.ValueTuple<bool, int>), TypeNameFormatOptions.NoTuple)]
         [InlineData("(A, N.S?)", typeof(System.ValueTuple<global::A, global::N.S?>), TypeNameFormatOptions.Namespaces)]

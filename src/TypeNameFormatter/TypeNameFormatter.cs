@@ -156,9 +156,10 @@ namespace TypeNameFormatter
                 if (IsSet(TypeNameFormatOptions.NoTuple, options) == false && type.Name.StartsWith("ValueTuple`", StringComparison.Ordinal) && type.Namespace == "System")
                 {
                     var genericTypeArgs = GetGenericTypeArguments(typeWithGenericTypeArgs);
+                    var n = genericTypeArgs.Length;
 
-                    stringBuilder.Append('(');
-                    for (int i = 0, n = genericTypeArgs.Length; i < n; ++i)
+                    stringBuilder.Append(n > 1 ? "(" : "ValueTuple<");
+                    for (int i = 0; i < n; ++i)
                     {
                         if (i > 0)
                         {
@@ -168,7 +169,7 @@ namespace TypeNameFormatter
                         stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
                     }
 
-                    stringBuilder.Append(')');
+                    stringBuilder.Append(n > 1 ? ')' : '>');
                     return;
                 }
             }
