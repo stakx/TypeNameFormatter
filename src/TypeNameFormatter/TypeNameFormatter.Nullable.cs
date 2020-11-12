@@ -160,19 +160,22 @@ namespace TypeNameFormatter
                     var genericTypeArgs = GetGenericTypeArguments(typeWithGenericTypeArgs);
                     var n = genericTypeArgs.Length;
 
-                    stringBuilder.Append(n > 1 ? "(" : "ValueTuple<");
-                    for (int i = 0; i < n; ++i)
+                    if (n > 1)
                     {
-                        if (i > 0)
+                        stringBuilder.Append('(');
+                        for (int i = 0; i < n; ++i)
                         {
-                            stringBuilder.Append(", ");
+                            if (i > 0)
+                            {
+                                stringBuilder.Append(", ");
+                            }
+
+                            stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
                         }
 
-                        stringBuilder.AppendFormattedName(genericTypeArgs[i], options);
+                        stringBuilder.Append(')');
+                        return;
                     }
-
-                    stringBuilder.Append(n > 1 ? ')' : '>');
-                    return;
                 }
             }
 
