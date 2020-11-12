@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 
+## Unreleased
+
+#### Changed
+
+* In order to be more in line with actual C# syntax, 0-tuples are rendered as `ValueTuple` instead of `()`, and 1-tuples are rendered as `ValueTuple<T1>` instead of `(T1)`. (@rcmdh, #41; @stakx, #47)
+
+
 ## 1.1.0 (2020-11-12)
 
 #### Added
