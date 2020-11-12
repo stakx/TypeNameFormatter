@@ -30,7 +30,8 @@
           BeforeTargets="CoreCompile"
           Inputs="$(SourceFolder)TypeNameFormatter.cs"
           Outputs="$(BaseIntermediateOutputPath)TypeNameFormatter.cs">
-    <Copy SourceFiles="$(SourceFolder)TypeNameFormatter.cs" DestinationFolder="$(BaseIntermediateOutputPath)" OverwriteReadOnlyFiles="true" />
+    <Copy Condition="'$(Nullable)'==''" SourceFiles="$(SourceFolder)TypeNameFormatter.cs" DestinationFiles="$(BaseIntermediateOutputPath)TypeNameFormatter.cs" OverwriteReadOnlyFiles="true" />
+    <Copy Condition="'$(Nullable)'!=''" SourceFiles="$(SourceFolder)TypeNameFormatter.Nullable.cs" DestinationFiles="$(BaseIntermediateOutputPath)TypeNameFormatter.cs" OverwriteReadOnlyFiles="true" />
   </Target>
 
   <!-- It would be nice to completely hide TypeNameFormatter files from the solution explorer. This could be done

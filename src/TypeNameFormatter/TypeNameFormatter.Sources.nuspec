@@ -26,6 +26,7 @@ This package is a source code distribution of this library. It gets embedded int
 
   <files>
     <file src="TypeNameFormatter.cs" target="build"/>
+    <file src="TypeNameFormatter.Nullable.cs" target="build"/>
     <file src="TypeNameFormatter.Sources.targets" target="build"/>
   </files>
 
