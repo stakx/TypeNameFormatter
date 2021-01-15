@@ -3,7 +3,7 @@
 
 // ReSharper disable All
 
-#nullable disable
+#nullable enable
 
 namespace TypeNameFormatter
 {
@@ -86,7 +86,7 @@ namespace TypeNameFormatter
             // PHASE 1: Rule out several special cases. (These are mostly "composite" types requiring some recursion.)
 
             // Types for which there is a keyword:
-            if (IsSet(TypeNameFormatOptions.NoKeywords, options) == false && typeKeywords.TryGetValue(type, out string typeKeyword))
+            if (IsSet(TypeNameFormatOptions.NoKeywords, options) == false && typeKeywords.TryGetValue(type, out string? typeKeyword))
             {
                 stringBuilder.Append(typeKeyword);
                 return;
@@ -95,7 +95,7 @@ namespace TypeNameFormatter
             // Arrays, by-ref, and pointer types:
             if (type.HasElementType)
             {
-                var elementType = type.GetElementType();
+                var elementType = type.GetElementType()!;
 
                 if (type.IsArray)
                 {
@@ -108,7 +108,7 @@ namespace TypeNameFormatter
                         if (et.IsArray)
                         {
                             r.Enqueue(et.GetArrayRank());
-                            HandleArrayElementType(et.GetElementType(), r);
+                            HandleArrayElementType(et.GetElementType()!, r);
                         }
                         else
                         {
@@ -211,15 +211,15 @@ namespace TypeNameFormatter
             {
                 if (type.IsNested)
                 {
-                    stringBuilder.AppendFormattedName(type.DeclaringType, options, typeWithGenericTypeArgs);
+                    stringBuilder.AppendFormattedName(type.DeclaringType!, options, typeWithGenericTypeArgs);
                     stringBuilder.Append('.');
                 }
                 else if (IsSet(TypeNameFormatOptions.Namespaces, options))
                 {
-                    string @namespace = type.Namespace;
+                    string? @namespace = type.Namespace;
                     if (string.IsNullOrEmpty(@namespace) == false)
                     {
-                        stringBuilder.Append(type.Namespace);
+                        stringBuilder.Append(@namespace);
                         stringBuilder.Append('.');
                     }
                 }
@@ -243,7 +243,7 @@ namespace TypeNameFormatter
                 int ownGenericTypeArgStartIndex = 0;
                 if (type.IsNested)
                 {
-                    var outerTypeGenericTypeParamCount = GetGenericTypeArguments(type.DeclaringType).Length;
+                    var outerTypeGenericTypeParamCount = GetGenericTypeArguments(type.DeclaringType!).Length;
                     if (ownGenericTypeParamCount >= outerTypeGenericTypeParamCount)
                     {
                         ownGenericTypeArgStartIndex = outerTypeGenericTypeParamCount;

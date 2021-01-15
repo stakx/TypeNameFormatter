@@ -217,7 +217,7 @@ namespace TypeNameFormatter
                     string @namespace = type.Namespace;
                     if (string.IsNullOrEmpty(@namespace) == false)
                     {
-                        stringBuilder.Append(type.Namespace);
+                        stringBuilder.Append(@namespace);
                         stringBuilder.Append('.');
                     }
                 }

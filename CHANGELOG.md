@@ -7,6 +7,10 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 ## Unreleased
 
+#### Added
+
+* Nullable annotations for versions of the C# compiler that support nullable reference types. (@kzu, #42; @stakx, #46)
+
 #### Changed
 
 * In order to be more in line with actual C# syntax, 0-tuples are rendered as `ValueTuple` instead of `()`, and 1-tuples are rendered as `ValueTuple<T1>` instead of `(T1)`. (@rcmdh, #41; @stakx, #47)
