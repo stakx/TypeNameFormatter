@@ -10,6 +10,7 @@ namespace TypeNameFormatter
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Text;
 
@@ -19,6 +20,7 @@ namespace TypeNameFormatter
     ///   <see cref="GetFormattedName(Type, TypeNameFormatOptions)"/>.
     /// </summary>
     [GeneratedCode("TypeNameFormatter", "1.1.0")]
+    [SuppressMessage("Style", "IDE0040:Add accessibility modifiers")]
     [DebuggerNonUserCode]
     [EditorBrowsable(EditorBrowsableState.Never)]
 #if TYPENAMEFORMATTER_INTERNAL
@@ -341,6 +343,7 @@ namespace TypeNameFormatter
     /// <summary>
     ///   An enumeration of available options when a <see cref="Type"/> name's string representation is requested.
     /// </summary>
+    [SuppressMessage("Style", "IDE0040:Add accessibility modifiers")]
     [Flags]
 #if TYPENAMEFORMATTER_INTERNAL
     internal
