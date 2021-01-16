@@ -9,5 +9,5 @@ before_build:
 - choco install codecov
 
 test_script:
-- '%USERPROFILE%\.nuget\packages\opencover\4.7.922\tools\OpenCover.Console.exe -register:user -target:"%USERPROFILE%\.nuget\packages\xunit.runner.console\2.4.1\tools\net472\xunit.console.x86.exe" -targetargs:".\src\TypeNameFormatter.Tests\bin\Debug\net47\TypeNameFormatter.Tests.dll -noshadow -appveyor" -filter:"+[TypeNameFormatter]* -[TypeNameFormatter.Tests]*" -output:".\coverage.xml" -returntargetcode'
+- '%USERPROFILE%\.nuget\packages\opencover\4.7.922\tools\OpenCover.Console.exe -register -target:"%USERPROFILE%\.nuget\packages\xunit.runner.console\2.4.1\tools\net472\xunit.console.x86.exe" -targetargs:".\src\TypeNameFormatter.Tests\bin\Debug\net47\TypeNameFormatter.Tests.dll -noshadow -appveyor" -filter:"+[TypeNameFormatter]* -[TypeNameFormatter.Tests]*" -output:".\coverage.xml" -returntargetcode'
 - codecov -f "coverage.xml"
