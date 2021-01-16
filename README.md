@@ -1,8 +1,8 @@
-﻿![TypeNameFormatter](https://github.com/stakx/typenameformatter/raw/master/assets/icon-64x64.png "TypeNameFormatter")
+﻿![TypeNameFormatter](https://github.com/stakx/typenameformatter/raw/main/assets/icon-64x64.png "TypeNameFormatter")
 
 TypeNameFormatter is a small .NET library for formatting type names à la C#. 
 
-[![NuGet badge](https://img.shields.io/nuget/v/TypeNameFormatter.Sources.svg)](https://www.nuget.org/packages/TypeNameFormatter.Sources "Package available on NuGet.org") [![AppVeyor](https://img.shields.io/appveyor/ci/stakx/TypeNameFormatter.svg)](https://ci.appveyor.com/project/stakx/typenameformatter) ![AppVeyor tests](https://img.shields.io/appveyor/tests/stakx/TypeNameFormatter.svg) [![Codecov](https://codecov.io/gh/stakx/TypeNameFormatter/branch/master/graph/badge.svg)](https://codecov.io/gh/stakx/TypeNameFormatter)
+[![NuGet badge](https://img.shields.io/nuget/v/TypeNameFormatter.Sources.svg)](https://www.nuget.org/packages/TypeNameFormatter.Sources "Package available on NuGet.org") [![AppVeyor](https://img.shields.io/appveyor/ci/stakx/TypeNameFormatter.svg)](https://ci.appveyor.com/project/stakx/typenameformatter) ![AppVeyor tests](https://img.shields.io/appveyor/tests/stakx/TypeNameFormatter.svg) [![Codecov](https://codecov.io/gh/stakx/TypeNameFormatter/branch/main/graph/badge.svg)](https://codecov.io/gh/stakx/TypeNameFormatter)
 
 
 ## What is this good for?
