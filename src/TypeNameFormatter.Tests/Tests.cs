@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2018 stakx
+﻿// Copyright (c) 2018-2021 stakx
 // License available at https://github.com/stakx/TypeNameFormatter/blob/master/LICENSE.md.
 
 namespace TypeNameFormatter
