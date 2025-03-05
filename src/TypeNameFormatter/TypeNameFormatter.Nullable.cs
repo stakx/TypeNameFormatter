@@ -357,6 +357,7 @@ namespace TypeNameFormatter
         /// <summary>
         ///   The default type name formatting options.
         /// </summary>
+        [SuppressMessage("Design", "CA1008:In enum TypeNameFormatOptions, change the name of Default to 'None'")]
         Default = 0,
 
         /// <summary>
@@ -408,7 +409,7 @@ namespace TypeNameFormatter
         /// <summary>
         ///   Specifies that value tuple types should not be transformed to C# tuple syntax.
         ///   <example>
-        ///   For example, the type <see cref="T:System.ValueTuple`2"/> of <see cref="Boolean"/>, <see cref="Int32"/>
+        ///   For example, the type <c>ValueTuple&lt;bool, int&gt;</c>
         ///   is formatted as <c>"(bool, int)"</c> by default. When this flag is specified,
         ///   it will be formatted as <c>"ValueTuple&lt;bool, int&gt;"</c>.
         ///   </example>
