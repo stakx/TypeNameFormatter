@@ -2,6 +2,7 @@
 // License available at https://github.com/stakx/TypeNameFormatter/blob/main/LICENSE.md.
 
 // ReSharper disable All
+#pragma warning disable
 
 #nullable enable
 
@@ -357,7 +358,6 @@ namespace TypeNameFormatter
         /// <summary>
         ///   The default type name formatting options.
         /// </summary>
-        [SuppressMessage("Design", "CA1008:In enum TypeNameFormatOptions, change the name of Default to 'None'")]
         Default = 0,
 
         /// <summary>

@@ -2,6 +2,7 @@
 // License available at https://github.com/stakx/TypeNameFormatter/blob/main/LICENSE.md.
 
 // ReSharper disable All
+#pragma warning disable
 
 namespace TypeNameFormatter
 {
@@ -406,7 +407,7 @@ namespace TypeNameFormatter
         /// <summary>
         ///   Specifies that value tuple types should not be transformed to C# tuple syntax.
         ///   <example>
-        ///   For example, the type <see cref="T:System.ValueTuple`2"/> of <see cref="Boolean"/>, <see cref="Int32"/>
+        ///   For example, the type <c>ValueTuple&lt;bool, int&gt;</c>
         ///   is formatted as <c>"(bool, int)"</c> by default. When this flag is specified,
         ///   it will be formatted as <c>"ValueTuple&lt;bool, int&gt;"</c>.
         ///   </example>
