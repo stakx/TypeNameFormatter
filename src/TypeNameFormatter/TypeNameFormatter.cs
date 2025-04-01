@@ -20,7 +20,7 @@ namespace TypeNameFormatter
     ///   <see cref="AppendFormattedName(StringBuilder, Type, TypeNameFormatOptions)"/> and
     ///   <see cref="GetFormattedName(Type, TypeNameFormatOptions)"/>.
     /// </summary>
-    [GeneratedCode("TypeNameFormatter", "1.1.1")]
+    [GeneratedCode("TypeNameFormatter", "1.1.2")]
     [SuppressMessage("Style", "IDE0040:Add accessibility modifiers")]
     [DebuggerNonUserCode]
     [EditorBrowsable(EditorBrowsableState.Never)]
